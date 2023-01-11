@@ -1,0 +1,11 @@
+;ADD IMPROPER DIHEDRALTYPES
+
+[ dihedraltypes ]
+; 'improper' dihedrals
+;      i        j        k        l  func         phi0         kphi
+     O       X       X       TC         2     0.000000    1004.16
+     NH1     X       X       CT3        2     0.000000    167.36
+     NH1     X       X       CT2        2     0.00        167.36
+     NH1     X       X       CT1        2     0.00        167.36
+; Original CHARMM...
+

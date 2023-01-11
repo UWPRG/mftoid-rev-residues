@@ -1,0 +1,70 @@
+;ADD PROPER DIHEDRALTYPES
+
+[ dihedraltypes ]
+;      i        j        k        l  func         phi0         kphi  mult
+; PEPTOID MFTOID DIHEDRALS from Mirijanian et al. (Janani Sampath) - unless noted
+;     TC      CT2     NH1     CT3     9         0.00      7.5312  1 ; updated in santiso/weiser MFTOID rho dihedral
+;     CT2     TC      NH1     CT3     9         0.00      0.0000  1 ; updated in santiso/weiser MFTOID omega dihedral
+;     CT2     TC      NH1     CT3     9         180.0     7.5312  2 ; updated in santiso/weiser MFTOID omega dihedral
+;     O       TC      NH1     CT3     9         180.0     10.460  2 ; updated in santiso/weiser MFTOID omega dihedral
+;     O       TC      NH1     CT2     9         180.0     10.460  2 ; updated in santiso/weiser MFTOID omega dihedral
+;     CT2     TC      NH1     CT2     9         0.000     0.0000  1 ; updated in santiso/weiser MFTOID omega dihedral
+;     CT2     TC      NH1     CT2     9         180.0     7.5312  2 ; updated in santiso/weiser MFTOID omega dihedral
+;     NH1     TC      CT2     NH1     9         0.000     2.5104  1 ; updated in santiso/weiser MFTOID psi dihedral
+; Weiser/Santiso focused on the cis/trans isomerization of peptoid backbones not commonly seen in peptide backbones
+     TC      CT2     NH1     TC      9         180.0     0.8368  1
+     CT1     TC      NH1     CT1     9         0.00      0.0000  1
+     CT1     TC      NH1     CT1     9         180.0     7.5312  2
+     CT3     TC      NH1     CT2     9         0.00      0.0000  1
+     CT3     TC      NH1     CT2     9         180.0     7.5312  2
+     CT3     TC      NH1     CT3     9         0.000     0.0000  1
+     CT3     TC      NH1     CT3     9         180.0     7.5312  2
+     HA      CT3     NH1     TC      9         0.000     0.0000  3
+     HA      CT3     NH1     CT2     9         0.000     0.0000  3
+     HA      CT3     NH1     CT3     9         0.000     0.0000  3
+     HB2     CT2     NH1     TC      9         0.000     0.0000  1
+     HB2     CT2     NH1     CT3     9         0.000     0.0000  1
+     NH1     TC      CT2     HB2     9         0.000     0.0000  1
+     NH1     TC      CT3     HA      9         0.000     0.0000  3
+     O       TC      CT2     HB2     9         0.000     0.0000  1
+     O       TC      CT2     NH1     9         0.000     0.0000  1
+     O       TC      CT3     HA      9         180.0     0.0000  3
+     X       CT2     NH1     X       9         0.000     0.4184  3
+; NEW FITTED MFTOID DIHEDRALS from Weiser/Santiso - SA
+; OMEGA: CA-,C-,N,CA
+     CT2     TC      NH1     CT2     9         180.0     8.9956  2
+     CT2     TC      NH1     CT3     9         180.0     8.9956  2
+     O       TC      NH1     CT2     9         180.0     8.9956  2
+     O       TC      NH1     CT3     9         180.0     8.9956  2
+; PSI: N,CA,C,N+
+     NH1     CT2      TC     NH1     9         180.0     3.3472  2
+; RHO
+     TC      CT2     NH1     CT3     9         180.0     3.3472  2
+     TC      CT2     NH1     CT2     9         180.0     3.3472  2
+; CHI: CA,N,CB,CG/CC/ETC. first dihedral off backbone
+; for NBRPE
+     CT2      NH1      CT2      CG2R61   9     0.00      1.6736     2 ; from weiser/santiso
+     CT2      NH1      CT2      CA       9     0.00      1.6736     2 ; from above for other atom types (CA = CG2R61)
+; for NSPE
+     CT2      NH1      CT2      CT3      9     0.00      1.6736     1 ; from weiser/santiso
+     CT2      NH1      CT2      CT3      9     0.00      0.8368     2 ; from weiser/santiso
+     CT2      NH1      CT2      CT3      9     180.00    1.2552     3 ; from weiser/santiso
+; Additional dihedrals required for ACE/NME termini
+     H        NH1       TC      CT2     9         180.0    10.4600  2 ; from H NH1 C CT2
+     O        TC       NH1        H     9         180.0    10.4600  2 ; from O C NH1 H
+     HA3      CT3      NH1       TC     9         0.000     0.0000  3 ; from HA CT3 NH1 TC
+     HA3      CT3      NH1      CT2     9         0.000     0.0000  3 ; from HA CT3 NH1 CT2
+     NH1      TC       CT3      HA3     9         0.000     0.0000  3 ; from NH1 C CT3 HA3, for termini
+     O        TC       CT3      HA3     9         180.0     0.0000  3 ; from O C CT3 HA3, for termini
+; Dihedrals involving CT1
+     TC       NH1      CT1      HA1     9         0.000     0.8368  3 ; from CT1 CT2 CT1 HA1 (most X X CT1 HA1 dihedrals are equivalent)
+     CT2      NH1      CT1      HA1     9         0.000     0.8368  3 ; from CT1 CT2 CT1 HA1 (most X X CT1 HA1 dihedrals are equivalent)
+     CT2       TC      NH1      CT1     9      0.000000    6.694400 1 ; from CT2 C NH1 CT1
+     CT2       TC      NH1      CT1     9    180.000000   10.460000 2 ; from CT2 C NH1 CT1
+     CT2      CT1      NH1       TC     9      0.000000    7.531200 1 ; from CT2 CT1 NH1 C
+     CT3      CT1      NH1       TC     9      0.000000    7.531200 1 ; from CT3 CT1 NH1 C
+       O       TC      NH1      CT1     9    180.000000   10.460000 2 ; from O C NH1 CT1
+     CT2      CT1      NH1      CT2     9    180.000000   10.878400 2 ; from CT2 C N CT2
+     CT3      CT1      NH1      CT2     9    180.000000   10.878400 2 ; from CT3 C N CT2
+; Original CHARMM...
+
