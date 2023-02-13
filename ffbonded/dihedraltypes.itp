@@ -56,6 +56,9 @@
      HA3      CT3      NH1      CT2     9         0.000     0.0000  3 ; from HA CT3 NH1 CT2
      NH1      TC       CT3      HA3     9         0.000     0.0000  3 ; from NH1 C CT3 HA3, for termini
      O        TC       CT3      HA3     9         180.0     0.0000  3 ; from O C CT3 HA3, for termini
+     CT3       TC      NH1      CT1     9         0.000     6.6944  1 ; from CT3 C NH1 CT1
+     CT3       TC      NH1      CT1     9         180.0     10.460  2 ; from CT3 C NH1 CT1
+       H      NH1       TC      CT3     9         180.0     10.460  2 ; from H NH1 C CT3
 ; Dihedrals involving CT1
      TC       NH1      CT1      HA1     9         0.000     0.8368  3 ; from CT1 CT2 CT1 HA1 (most X X CT1 HA1 dihedrals are equivalent)
      CT2      NH1      CT1      HA1     9         0.000     0.8368  3 ; from CT1 CT2 CT1 HA1 (most X X CT1 HA1 dihedrals are equivalent)
