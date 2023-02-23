@@ -1,0 +1,35 @@
+TITLE     Green Red Orange Magenta Azure Cyan Skyblue in water
+REMARK    THIS IS A SIMULATION BOX
+CRYST1   29.822   29.822   29.822  90.00  90.00  90.00 P 1           1
+MODEL        1
+ATOM      1  CAY ACEp    0       9.160   6.420  14.410  1.00  0.00            
+ATOM      2  HY1 ACEp    0       9.500   6.100  15.420  1.00  0.00            
+ATOM      3  HY2 ACEp    0       9.670   7.360  14.140  1.00  0.00            
+ATOM      4  HY3 ACEp    0       8.050   6.500  14.490  1.00  0.00            
+ATOM      5  CLP ACEp    0       9.500   5.290  13.440  1.00  0.00            
+ATOM      6  OL  ACEp    0       8.610   4.970  12.620  1.00  0.00            
+ATOM      7  NL  METd    1      10.750   4.690  13.540  1.00  0.00            
+ATOM      8  CA  METd    1      11.780   5.040  14.520  1.00  0.00            
+ATOM      9  HA1 METd    1      12.800   4.800  14.250  1.00  0.00            
+ATOM     10  HA2 METd    1      11.650   6.010  14.960  1.00  0.00            
+ATOM     11  CB  METd    1      11.150   3.760  12.480  1.00  0.00            
+ATOM     12  HB1 METd    1      10.300   3.130  12.130  1.00  0.00            
+ATOM     13  HB2 METd    1      11.990   3.170  12.900  1.00  0.00            
+ATOM     14  CG  METd    1      11.650   4.490  11.230  1.00  0.00            
+ATOM     15  HG1 METd    1      12.540   5.100  11.490  1.00  0.00            
+ATOM     16  HG2 METd    1      10.830   5.150  10.850  1.00  0.00            
+ATOM     17  SD  METd    1      12.110   3.290   9.880  1.00  0.00            
+ATOM     18  CE  METd    1      10.540   2.360   9.630  1.00  0.00            
+ATOM     19  HE1 METd    1      10.490   1.670  10.500  1.00  0.00            
+ATOM     20  HE2 METd    1      10.450   1.950   8.610  1.00  0.00            
+ATOM     21  HE3 METd    1       9.620   2.960   9.780  1.00  0.00            
+ATOM     22  CLP METd    1      11.450   4.050  15.620  1.00  0.00            
+ATOM     23  OL  METd    1      10.280   3.660  15.880  1.00  0.00            
+ATOM     24  NL  NMEp    2      12.510   3.580  16.200  1.00  0.00            
+ATOM     25  HNT NMEp    2      13.450   3.860  15.980  1.00  0.00            
+ATOM     26  CAT NMEp    2      12.380   2.630  17.300  1.00  0.00            
+ATOM     27  HT1 NMEp    2      12.240   1.560  17.010  1.00  0.00            
+ATOM     28  HT2 NMEp    2      13.260   2.780  17.970  1.00  0.00            
+ATOM     29  HT3 NMEp    2      11.480   2.840  17.920  1.00  0.00            
+TER
+ENDMDL
