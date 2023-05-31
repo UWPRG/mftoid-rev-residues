@@ -9,8 +9,6 @@ import shutil
 from Bio.PDB.vectors import Vector, rotaxis, calc_dihedral, rotmat
 from Bio.SVDSuperimposer import SVDSuperimposer
 
-from rdkit import Chem
-from rdkit.Chem import AllChem
 
 # from utils import *
 kT = 50
@@ -303,7 +301,7 @@ def energy_function(mindists):
 sigma = 0.01
 
 def minimize_energy():
-    molecule = md.load('output.pdb')
+    molecule = md.load('output.pdb', standard_names=False)
     for k in range(900):
         for j, letter in enumerate(args.seq[:-1]):
             if args.mini == 'A+T' or args.mini == 'A-T':
@@ -316,13 +314,13 @@ def minimize_energy():
 
 #ADD HYDROGENS
 def add_hydrogens(file1, file2):
-    molecule = md.load(file1)
+    molecule = md.load(file1, standard_names=False)
     new_mtop = molecule.topology
     for j, letter in enumerate(args.seq):
         sup = SVDSuperimposer()
         mtop = molecule.topology
         residue = [res for res in mtop.residues][j]
-        traj_h = md.load("residue_pdb/" + FILENAMES[letter] + ".pdb")
+        traj_h = md.load("residue_pdb/" + FILENAMES[letter] + ".pdb", standard_names=False)
         htop = traj_h.topology
         atoms = np.array([atom for atom in htop.atoms])
         bonds = [bond for bond in htop.bonds]
@@ -406,7 +404,7 @@ def add_hydrogens(file1, file2):
     molecule.save_pdb(file2)
 
 def attach_ace_nme():
-    molecule = md.load("molecule.pdb")
+    molecule = md.load("molecule.pdb", standard_names=False)
     ace = md.load('residue_pdb/ACEp_f.pdb')
     nme = md.load('residue_pdb/NMEp_f.pdb')
     ace_index = ace.topology.select('name CLP')[0]
@@ -419,7 +417,7 @@ def attach_ace_nme():
     ace.xyz[0] += n_bond * .3
     nme_attach = nme.xyz[0, nme.topology.select('name NL')[0]]
     nres = molecule.topology.n_residues
-    template_h = md.load("minima_pdb/" + mini_string + "_h.pdb")
+    template_h = md.load("minima_pdb/" + mini_string + "_h.pdb", standard_names=False)
     if nres == 19:
         mol_cterm = template_h.xyz[0, 134]
     else:
@@ -460,7 +458,7 @@ minimize_energy()
 # command = "obabel output.pdb -O output2.pdb -d --minimize --steps 1000 --sd"
 # subprocess.run(command.split(), stdout=subprocess.PIPE)
 add_hydrogens("output.pdb", "molecule.pdb")
-attach_ace_nme()
+nres = attach_ace_nme()
 
 # add_hydrogens("output2.pdb", "molecule2.pdb")        
 # command = "obabel molecule.pdb -O molecule3.pdb -d --minimize --steps 1000 --sd"
@@ -471,24 +469,17 @@ fs = ("molecule.pdb",)
 for ff in fs:
     with open(ff) as f:
         lines = f.readlines()
-
+    atom_number = 1
     with open(ff, "w") as f:
         for line in lines:
-            l = line
-            if line.startswith("ATOM"):
-                if 'PRO' in line or 'GLU' in line or 'ASP' in line or 'CYS' in line or 'MET' in line:
-                    str2 = "d    "
-                else:
-                    str2 = "p    "
-                if line[13:19] == "C   NM":
-                    str1 = "CAT"
-                elif line[13:15] == "N ":
-                    str1 = "NL "
-                elif line[13:15] == "C ":
-                    str1 = "CLP"
-                elif line[13:15] == "O ":
-                    str1 = "OL "
-                elif line[13:16] == "CH3":
+            if "MODEL" in line:
+                f.write(line)
+            if "ACE" in line:
+                numlen = len(str(atom_number))
+                str0 = " " * (5 - numlen) + str(atom_number) + "  "
+                atom_number += 1
+                str2 = "p    " + "0   "                
+                if line[13:16] == "CH3":
                     str1 = "CAY"
                 elif line[13:18] == "H1  A":
                     str1 = "HY1"
@@ -496,23 +487,73 @@ for ff in fs:
                     str1 = "HY2"
                 elif line[13:18] == "H3  A":
                     str1 = "HY3"
+                else:
+                    str1 = line[13:16]
+                l = line[:6] + str0 + str1 + line[16:20] + str2 + line[29:]
+                f.write(l)
+            
+        for line in lines:
+            l = line
+            if "ENDMDL" in line:
+                f.write(line)
+                continue
+            if "ACE" in line or 'MODEL' in line or 'CONECT' in line:
+                continue
+            elif "NME" in line:
+                numlen = len(str(atom_number))
+                str0 = " " * (5 - numlen) + str(atom_number) + "  "
+                atom_number += 1
+                str2 = "p    "
+                nres = len(args.seq)
+                if nres > 10:
+                    str3 = str(nres + 1) + "  "
+                else:
+                    str3 = str(nres + 1) + "   "
+                if line[13:19] == "C   NM":
+                    str1 = "CAT"
+                elif line[13:15] == "H ":
+                    str1 = "HNT"
                 elif line[13:18] == "H1  N":
                     str1 = "HT1"
                 elif line[13:18] == "H2  N":
                     str1 = "HT2"
                 elif line[13:18] == "H3  N":
                     str1 = "HT3"
-                elif line[13:18] == "H   G":
-                    str1 = "HN "
-                elif line[13:18] == "HA3 G":
-                    str1 = "HA1"
-                elif line[13:15] == "H ":
-                    str1 = "HNT"
-                
                 else:
                     str1 = line[13:16]
-                l = line[:13] + str1 + line[16:20] + str2 + line[25:]
+                if "TER" in line:
+                    l = line[:6] + str0 + str1 + line[16:20] + str2 + str3 + "\n"
+                else:
+                    l = line[:6] + str0 + str1 + line[16:20] + str2 + str3 + line[29:]
+
+            elif line.startswith("ATOM"):
+                num_str = line[25:27]
+                cur_resnum = int(num_str)
+                cur_residue = " " + FILENAMES[args.seq[cur_resnum - 1]] + "    "
+                numlen = len(str(atom_number))
+                str0 = " " * (5 - numlen) + str(atom_number) + " "
+                atom_number += 1
+#                 if 'PRO' in line or 'GLU' in line or 'ASP' in line or 'CYS' in line or 'MET' in line:
+#                     str2 = "d    "
+#                 else:
+#                     str2 = "p    "
+                
+                if line[13:15] == "N ":
+                    str1 = " NL "
+                elif line[13:15] == "C ":
+                    str1 = " CLP"
+                elif line[13:15] == "O ":
+                    str1 = " OL "             
+                elif line[13:18] == "H   G":
+                    str1 = " HN "
+                elif line[13:18] == "HA3 G":
+                    str1 = " HA1"         
+                else:
+                    str1 = line[12:16]
+                l = line[:6] + str0 + str1 + cur_residue + line[25:]
             f.write(l)
         
-# command = "rm output.pdb output2.pdb combined.pdb"
+# command = "obabel molecule.pdb -O molecule.pdb"
 # subprocess.run(command.split(), stdout=subprocess.PIPE)
+command = "rm output.pdb combined.pdb"
+subprocess.run(command.split(), stdout=subprocess.PIPE)
