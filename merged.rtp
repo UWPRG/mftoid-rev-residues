@@ -87,6 +87,46 @@
           NH1  HH11  HH12    CZ
           NH2  HH21  HH22    CZ
 
+[ ASNp ] ; peptoid residue original aspargine
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.180  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           CG    CC    0.550  7
+          OD1     O   -0.550  8
+          ND2   NH2   -0.620  9
+         HD21     H    0.320 10
+         HD22     H    0.300 11
+          CLP    TC    0.510 12
+           OL     O   -0.510 13
+  [ bonds ]
+           CB    NL
+           CG    CB
+          ND2    CG
+           NL    CA
+          CLP    CA
+          CLP   +NL
+         -CLP    NL
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+          ND2  HD21
+          ND2  HD22
+          CLP    OL
+           CG   OD1
+  [ impropers ]
+           NL  -CLP    CA    CB
+          CLP   +NL    CA    OL
+           CG   ND2    CB   OD1
+           CG    CB   ND2   OD1
+          ND2    CG  HD21  HD22
+          ND2    CG  HD22  HD21
+
 [ ASPd ] ; peptoid residue original ASP, used "d" instead of "p" to avoid confusion with protonated ASP
   [ atoms ]
            NL   NH1   -0.210  0
@@ -119,6 +159,82 @@
            NL   -CLP  CA    CB
           CLP    CA  +NL    OL
            CG    CB   OD2   OD1
+
+[ CYSd ] ; peptoid residue original cysteine
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+	  HA2	HB2    0.090  3
+           CB   CT2   -0.110  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           SG     S   -0.230  7
+          HG1    HS    0.160  9
+          CLP    TC    0.510 10
+           OL     O   -0.510 11
+  [ bonds ]
+	 -CLP	 NL
+           SG    CB
+           NL    CA
+	   NL	 CB
+          CLP    CA
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+           SG   HG1
+           OL   CLP
+          CLP   +NL
+  [ impropers ]
+           NL    -CLP    CA    CB
+           CLP   +NL     CA    OL
+
+[ GLNp ] ; peptoid residue original glutamine
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+	  HA1	HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.180  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           CG   CT2   -0.180  7
+          HG1   HA2    0.090  8
+          HG2   HA2    0.090  9
+           CD    CC    0.550 10
+          OE1     O   -0.550 11
+          NE2   NH2   -0.620 12
+         HE21     H    0.320 13
+         HE22     H    0.300 14
+          CLP    TC    0.510 15
+           OL     O   -0.510 16
+  [ bonds ]
+         -CLP    NL 
+           CG    CB
+           CD    CG
+          NE2    CD
+           NL    CA
+	   NL    CB
+          CLP    CA
+          CLP   +NL
+           CA   HA1
+	   CA	HA2
+           CB   HB1
+           CB   HB2
+           CG   HG1
+           CG   HG2
+          NE2  HE21
+          NE2  HE22
+           OL   CLP
+           CD   OE1
+  [ impropers ]
+           NL  -CLP    CA    CB
+          CLP   +NL    CA    OL
+           CD   NE2    CG   OE1
+           CD    CG   NE2   OE1
+          NE2    CD  HE21  HE22
+          NE2    CD  HE22  HE21
 
 [ GLUd ] ; peptoid residue original GLU
   [ atoms ]
@@ -159,6 +275,8 @@
           CLP    CA   +NL   OL
            CD    CG   OE2   OE1
 
+
+
 [ GLYp ] ; peptoid residue original glycine
   [ atoms ]
            NL   NH1   -0.470  0
@@ -179,6 +297,154 @@
   [ impropers ]
             NL   -CLP    CA    HN
             CLP    CA   +NL    OL
+
+
+[ HSDp ] ; peptoid residue original histidine (delta-N protonated)
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.090  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+          ND1   NR1   -0.360  7
+          HD1     H    0.320  8
+           CG  CPH1   -0.050  9
+          CE1  CPH2    0.250 10
+          HE1   HR1    0.130 11
+          NE2   NR2   -0.700 12
+          CD2  CPH1    0.220 13
+          HD2   HR3    0.100 14
+          CLP    TC    0.510 15
+           OL     O   -0.510 16
+  [ bonds ]
+           CB    NL
+           CG    CB
+          ND1    CG
+          CE1   ND1
+          NE2   CD2
+           NL    CA
+          CLP    CA
+          CLP   +NL
+         -CLP    NL
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+          ND1   HD1
+          CD2   HD2
+          CE1   HE1
+           OL   CLP
+           CG   CD2
+          CE1   NE2
+  [ impropers ]
+          ND1    CG   CE1   HD1
+          CD2    CG   NE2   HD2
+          CE1   ND1   NE2   HE1
+          ND1   CE1    CG   HD1
+          CD2   NE2    CG   HD2
+          CE1   NE2   ND1   HE1
+            NL   -CLP   CA    CB
+            CLP  +NL    CA    OL
+
+[ HSEp ] ; peptoid residue original histidine (epsilon-N protonated)
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.090  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+          ND1   NR2   -0.700  7
+           CG  CPH1    0.220  8
+          CE1  CPH2    0.250  9
+          HE1   HR1    0.130 10
+          NE2   NR1   -0.360 11
+          HE2     H    0.320 12
+          CD2  CPH1   -0.050 13
+          HD2   HR3    0.090 14
+          CLP    TC    0.510 15
+           OL     O   -0.510 16   
+  [ bonds ]
+           CB    NL
+           CG    CB
+          ND1    CG
+          NE2   CD2
+           NL    CA
+          CLP    CA
+          CLP   +NL
+         -CLP    NL
+          NE2   CE1
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+          NE2   HE2
+          CD2   HD2
+          CE1   HE1
+           OL   CLP
+          CD2    CG
+          CE1   ND1
+  [ impropers ]
+          NE2   CD2   CE1   HE2
+          CD2    CG   NE2   HD2
+          CE1   ND1   NE2   HE1
+          NE2   CE1   CD2   HE2
+          CD2   NE2    CG   HD2
+          CE1   NE2   ND1   HE1
+            NL   -CLP   CA    CB
+            CLP  +NL    CA    OL
+
+[ HSPp ] ; peptoid residue original histidine (both nitrogens protonated)
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.090  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+          CD2  CPH1    0.190  7
+          HD2   HR1    0.130  8
+           CG  CPH1    0.190  9
+          NE2   NR3   -0.510 10
+          HE2     H    0.440 11
+          ND1   NR3   -0.510 12
+          HD1     H    0.440 13
+          CE1  CPH2    0.320 14
+          HE1   HR2    0.180 15
+          CLP    TC    0.510 16
+           OL     O   -0.510 17
+  [ bonds ]
+           CB    NL
+           CG    CB
+          ND1    CG
+          CE1   ND1
+          NE2   CD2
+           NL    CA
+          CLP    CA
+          CLP   +NL
+         -CLP    NL
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+          ND1   HD1
+          NE2   HE2
+          CD2   HD2
+          CE1   HE1
+           OL   CLP
+          CD2    CG
+          NE2   CE1
+  [ impropers ]
+          ND1    CG   CE1   HD1
+          ND1   CE1    CG   HD1
+          NE2   CD2   CE1   HE2
+          NE2   CE1   CD2   HE2
+            NL   -CLP   CA    CB
+            CLP  +NL    CA    OL
 
 [ ILEp ] ; peptoid residue original isoleucine
   [ atoms ]
@@ -324,6 +590,48 @@
             NL   -CLP    CA    CB
             CLP  +NL     CA    OL
 
+[ METd ] ; peptoid residue original methionine
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.180  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           CG   CT2   -0.140  7
+          HG1   HA2    0.090  8
+          HG2   HA2    0.090  9
+           SD     S   -0.090 10
+           CE   CT3   -0.220 11
+          HE1   HA3    0.090 12
+          HE2   HA3    0.090 13
+          HE3   HA3    0.090 14
+          CLP    TC    0.510 15
+           OL     O   -0.510 16
+  [ bonds ]
+           CG    CB
+           SD    CG
+           CE    SD
+           NL    CB
+          CLP    CA
+           NL    CA
+          CLP   +NL
+           NL  -CLP
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+           CG   HG1
+           CG   HG2
+           CE   HE1
+           CE   HE2
+           CE   HE3
+           OL   CLP
+  [ impropers ]
+           NL    -CLP   CA    CB
+           CLP   +NL    CA    OL
+
 [ PHEp ] ; peptoid residue original PHE
   [ atoms ]
            NL   NH1   -0.210  0
@@ -373,6 +681,42 @@
             NL    -CLP    CA    CB
             CLP    CA    +NL     OL
 
+[ PROd ] ; peptoid residue original proline
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CD   CP3    0.000  1
+          HD1   HA2    0.090  2
+          HD2   HA2    0.090  3
+           CA   CP1    0.030  4
+           HA   HB1    0.090  5
+           CB   CP2   -0.180  6
+          HB1   HA2    0.090  7
+          HB2   HA2    0.090  8
+           CG   CP2   -0.180  9
+          HG1   HA2    0.090 10
+          HG2   HA2    0.090 11
+          CLP    TC    0.510 12
+           OL     O   -0.510 13
+  [ bonds ]
+          CLP    CA
+          CLP   +NL
+           NL    CA
+           CA    CB
+           CB    CG
+           CG    CD
+           NL    CD
+           HA    CA
+          HG1    CG
+          HG2    CG
+          HD1    CD
+          HD2    CD
+          HB1    CB
+          HB2    CB
+           OL   CLP
+  [ impropers ]
+           NL    -CLP    CA    CD
+         CLP      CA    +NL    OL
+
 [ SERp ] ; peptoid residue original serine
   [ atoms ]
            NL   NH1   -0.210  0
@@ -402,6 +746,100 @@
   [ impropers ]
            NL   -CLP   CA    CB
            CLP    CA  +NL    OL
+
+[ THRp ] ; peptoid residue original threonine
+  [ atoms ]  
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT1    0.140  4
+           HB   HA1    0.090  5
+          OG1   OH1   -0.660  6
+          HG1     H    0.430  7
+          CG2   CT3   -0.270  8
+         HG21   HA3    0.090  9
+         HG22   HA3    0.090 10
+         HG23   HA3    0.090 11
+          CLP    TC    0.510 12
+           OL     O   -0.510 13
+  [ bonds ]
+           CB    NL
+          OG1    CB
+          CG2    CB
+           NL    CA
+          CLP    CA
+          CLP   +NL
+           CA   HA1
+           CA   HA2
+           CB    HB
+          OG1   HG1
+          CG2  HG21
+          CG2  HG22
+          CG2  HG23
+           OL   CLP
+	  -NL   CLP
+  [ impropers ]
+            NL   -CLP   CA    CB
+            CLP  +NL    CA    OL
+
+[ TRPp ] ; peptoid residue original tryptophan
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT2   -0.180  4
+          HB1   HA2    0.090  5
+          HB2   HA2    0.090  6
+           CG    CY   -0.030  7
+          CD1    CA   -0.150  8
+          HD1    HP    0.220  9
+          NE1    NY   -0.510 10
+          HE1     H    0.370 11
+          CE2   CPT    0.240 12
+          CD2   CPT    0.110 13
+          CE3   CAI   -0.250 14
+          HE3    HP    0.170 15
+          CZ3    CA   -0.200 16
+          HZ3    HP    0.140 17
+          CZ2   CAI   -0.270 18
+          HZ2    HP    0.160 19
+          CH2    CA   -0.140 20
+          HH2    HP    0.140 21
+          CLP    TC    0.510 22
+           OL     O   -0.510 23
+  [ bonds ]
+           CG    CB
+          CD2    CG
+          NE1   CD1
+          CZ2   CE2
+           NL    CA
+           NL    CB
+          CLP    CA
+          CLP   +NL
+	   NL  -CLP
+          CZ3   CH2
+          CD2   CE3
+          NE1   CE2
+           CA   HA1
+           CA   HA2
+           CB   HB1
+           CB   HB2
+          CD1   HD1
+          NE1   HE1
+          CE3   HE3
+          CZ2   HZ2
+          CZ3   HZ3
+          CH2   HH2
+           OL   CLP
+          CD1    CG
+          CE2   CD2
+          CZ3   CE3
+          CH2   CZ2
+  [ impropers ]
+            NL   -CLP   CA    CB
+            CLP  +NL    CA    OL
 
 [ TYRp ] ; peptoid residue original tyrosine
   [ atoms ]
@@ -453,6 +891,46 @@
   [ impropers ]
             NL    -CLP    CA    CB
             CLP    CA    +NL    OL
+
+[ VALp ] ; peptoid residue original valine
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB   CT1   -0.090  4
+           HB   HA1    0.090  5
+          CG1   CT3   -0.270  6
+         HG11   HA3    0.090  7
+         HG12   HA3    0.090  8
+         HG13   HA3    0.090  9
+          CG2   CT3   -0.270 10
+         HG21   HA3    0.090 11
+         HG22   HA3    0.090 12
+         HG23   HA3    0.090 13
+          CLP    TC    0.510 14
+           OL     O   -0.510 15
+  [ bonds ]
+           CB    NL
+          CG1    CB
+          CG2    CB
+           NL    CA
+           NL  -CLP
+          CLP    CA
+          CLP   +NL
+           CA   HA1
+           CA   HA2
+           CB    HB
+          CG1  HG11
+          CG1  HG12
+          CG1  HG13
+          CG2  HG21
+          CG2  HG22
+          CG2  HG23
+           OL   CLP
+  [ impropers ]
+           NL  -CLP    CA    CB
+          CLP   +NL    CA    OL
 
 [ ACEp ] ; N-terminal acetyl patch EDITED FOR PEPTOIDS
  [ atoms ]
