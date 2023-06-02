@@ -778,7 +778,7 @@
           CG2  HG22
           CG2  HG23
            OL   CLP
-	  -NL   CLP
+	   NL  -CLP
   [ impropers ]
             NL   -CLP   CA    CB
             CLP  +NL    CA    OL
