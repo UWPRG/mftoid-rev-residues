@@ -1,17 +1,12 @@
 import numpy as np
 import mdtraj as md
-import Bio.PDB
 import os
 import argparse
 import subprocess
-import shutil
 
 from Bio.PDB.vectors import Vector, rotaxis, calc_dihedral, rotmat
 from Bio.SVDSuperimposer import SVDSuperimposer
 
-
-# from utils import *
-kT = 50
 
 FILENAMES = {
     'A': 'ALAp',
@@ -37,6 +32,8 @@ FILENAMES = {
     'Y': 'TYRp',
     'V': 'VALp'
 }
+
+
 MINIMA_FILENAMES = {
     'C7B+T': 'c7beta_plus_trans',
     'C7B-T': 'c7beta_minus_trans',
@@ -79,170 +76,169 @@ NUM_ITERS = {
 
 NTERM_POSITION = np.array([0.0264, -2.7761, 2.590])
 
-parser = argparse.ArgumentParser(
-    description="Molecule Inserter for peptoids"
-)
-parser.add_argument(
-    "--seq",
-    type=str,
-    default=None,
-    metavar="seq",
-    help="box size",
-)
-parser.add_argument(
-    "--mini",
-    type=str,
-    default=None,
-    metavar="mini",
-    help="minimum configuration",
-)
-args = parser.parse_args()
 
-if args.seq is None:
-    raise ValueError("Sequence Entry Needed")
-    
-if args.mini is None:
-    raise ValueError("Minimum selection needed")
-
-
-
-if args.mini not in MINIMA_FILENAMES.keys():
-    err_string = str(args.mini) + " is not a valid minimum code. The valid codes are: " + str(minima_filenames.keys())
-    raise ValueError(err_string)
-
-mini_string = MINIMA_FILENAMES[args.mini]
-backbone = md.load("minima_pdb/" + mini_string + ".pdb")
-template = md.load("minima_pdb/" + mini_string + "_nh.pdb")
-
-full_structure = md.Trajectory(np.zeros((1, 0, 3)), md.Topology())
-nres = backbone.topology.n_residues
-# first_indices = backbone.topology.select("resid 0 or resid 1")
-# last_indices = backbone.topology.select("resid 0 or resid 1")
-# first_mean = np.mean(backbone.xyz[0, first_indices], axis=0)
-# last_mean = np.mean(backbone.xyz[0, last_indices], axis=0)
-# linear_chain = last_mean - first_mean
+#Keep track of the backbone and sidechain indices
 backbone_indices = []
 sidechain_indices = []
-cur_index = 0
-i = 1
-for letter in args.seq:
-    backbone_indices.append(np.arange(cur_index, cur_index + 4))
-    if letter not in FILENAMES.keys():
-        err_string = str(letter) + " is not a valid amino acid code."
-        raise ValueError(err_string)
-    # Read the structure PDB file
-    filename = "noh_residue_pdb/" + FILENAMES[letter] + ".pdb"
-    cur_index += 4
-    if letter == "P":
-        # I hate proline!
-        orientation = md.load('PROd.pdb', standard_names=False)
-        template_backbone_indices = template.topology.select('resSeq ' + str(i) + " and backbone")
-        pro_backbone_indices = [3, 1, 0, 2]
-        pro_sidechain_indices = [4, 5, 6, 7, 8, 10, 11, 12, 13]
-        sup = SVDSuperimposer()
-        sup.set(template.xyz[0, template_backbone_indices], orientation.xyz[0, pro_backbone_indices])
-        sup.run()
-        rms = sup.get_rms()
-        rot, tran = sup.get_rotran()
-        orientation.xyz[0, pro_sidechain_indices] = np.dot(orientation.xyz[0, pro_sidechain_indices], rot) + tran
-#         orientation.superpose(template, atom_indices=pro_backbone_indices, ref_atom_indices=template_backbone_indices)
-        structure = md.load(filename, standard_names=False)
-        cur_index += structure.topology.n_atoms
-        sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
-        structure.xyz[0] = orientation.xyz[0, pro_sidechain_indices]
-        template_ca_index = template_backbone_indices = template.topology.select('resid ' + str(i-1) + " and name CA")
-        cb_index = structure.topology.select('name CB')
-        ca_cb_bond = template.xyz[0, template_ca_index] - structure.xyz[0, cb_index]
-        structure.xyz[0, cb_index] += 0.25 * ca_cb_bond
-        t, b = structure.topology.to_dataframe()
-        t['resSeq'] = i
-        structure = md.Trajectory(structure.xyz, md.Topology.from_dataframe(t, b))
-        backbone = backbone.stack(structure)
-        table, bonds = backbone.topology.to_dataframe()
-        resname = list(table.loc[table['chainID'] == 1, 'resName'])[0]
-        table['chainID'] = 0
-        table.loc[table['resSeq'] > nres, 'resSeq'] = i
-        table.loc[table['resSeq'] == i, 'resName'] = resname
-        table.loc[:, 'serial'] = np.arange(len(table)) + 1
-        top = md.Topology.from_dataframe(table, bonds)
-        t2, b2 = top.to_dataframe()
-        proper_indices = t2['serial'].to_numpy() - 1
-        backbone = md.Trajectory(backbone.xyz[0, proper_indices], top)
-        top = backbone.topology
-        bond_n = top.select("resid " + str(i-1) + " and name N")[0]
-        bond_ca = top.select("resid " + str(i-1) + " and name CA")[0]
-        bond_r = top.select("resSeq " + str(i) + " and resname " + resname + " and not name C and not name N and not name CA and not name O")[0]
-        bond_c = top.select("resSeq " + str(i) + " and resname " + resname + " and not name C and not name N and not name CA and not name O")[0]
-        atoms = [atom for atom in top.atoms]
-        top.add_bond(atoms[np.where(proper_indices == bond_n)[0][0]], atoms[np.where(proper_indices == bond_r)[0][0]])
-        top.add_bond(atoms[np.where(proper_indices == bond_ca)[0][0]], atoms[np.where(proper_indices == bond_c)[0][0]])
-        backbone.topology = top
-#     elif letter == "G":
-#         sidechain_indices.append(np.array([], dtype=np.int32))
-#         table, bonds = backbone.topology.to_dataframe()
-#         table.loc[table['resSeq'] == i, 'resName'] = "GLY"
-#         backbone.topology = md.Topology.from_dataframe(table, bonds)
+    
+
+    
+def load_sequence(sequence, minimum, filename):
+    #Add residue by residue
+    cur_index = 0
+    i = 1
+    #Begin creating a topology
+    global backbone_indices
+    global sidechain_indices
+    print("Loading Minima...")
+    if minimum in MINIMA_FILENAMES.keys():
+        mini_string = MINIMA_FILENAMES[minimum]
+        backbone = md.load("minima_pdb/" + mini_string + ".pdb")
+        template = md.load("minima_pdb/" + mini_string + "_nh.pdb")
+        print("Your minimum is " + mini_string)
     else:
-        structure = md.load(filename, standard_names=False)
-        sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
-        cur_index += structure.topology.n_atoms
-        cur_h = template.topology.select("resSeq " + str(i) + " and name H")[0]
-        cur_n = template.topology.select("resSeq " + str(i) + " and name N")[0]
-        if letter != "A" and letter != "G":
-            first_bond = template.xyz[0, cur_h] - template.xyz[0, cur_n]
-            cur_orientation = np.mean(structure.xyz[0, 1:], axis=0) - structure.xyz[0, 0]
-            rmat = rotmat(Vector(*cur_orientation), Vector(*first_bond))
-            structure.xyz[0] = (np.matmul(rmat, structure.xyz[0].T)).T
-        bond = template.xyz[0, cur_h] - template.xyz[0, cur_n]
-        if letter == 'G':
-            location = template.xyz[0, cur_n] + bond
+        print("You did not input a valid minimum. Defaulting to alphaD_plus_trans")
+        mini_string = 'alphaD_plus_trans' 
+        backbone = md.load("minima_pdb/alphaD_plus_trans.pdb")
+        template = md.load("minima_pdb/alphaD_plus_trans_nh.pdb")
+    nres = backbone.topology.n_residues
+    print("Loading Sequence....")
+    for letter in sequence:
+        backbone_indices.append(np.arange(cur_index, cur_index + 4))
+        if letter not in FILENAMES.keys():
+            err_string = str(letter) + " is not a valid amino acid code."
+            raise ValueError(err_string)
+        
+        # Read the structure PDB file
+        filename2 = "noh_residue_pdb/" + FILENAMES[letter] + ".pdb"
+        print("Residue " + str(i) + ": " + FILENAMES[letter][:-1])
+        cur_index += 4
+        if letter == "P":
+            #load the proline file, superimpose proline's atoms on top of the backbone
+            orientation = md.load('proline/PROd.pdb', standard_names=False)
+            template_backbone_indices = template.topology.select('resSeq ' + str(i) + " and backbone")
+            pro_backbone_indices = [3, 1, 0, 2]
+            pro_sidechain_indices = [4, 5, 6, 7, 8, 10, 11, 12, 13]
+            sup = SVDSuperimposer()
+            sup.set(template.xyz[0, template_backbone_indices], orientation.xyz[0, pro_backbone_indices])
+            sup.run()
+            rms = sup.get_rms()
+            rot, tran = sup.get_rotran()
+
+            #put proline ring indices where they belong
+            orientation.xyz[0, pro_sidechain_indices] = np.dot(orientation.xyz[0, pro_sidechain_indices], rot) + tran
+            structure = md.load("PROd.pdb", standard_names=False)
+            cur_index += structure.topology.n_atoms
+
+            sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
+            structure.xyz[0] = orientation.xyz[0, pro_sidechain_indices]
+
+            #Adjust length of CA-CB bond
+            template_ca_index = template.topology.select('resid ' + str(i-1) + " and name CA")
+            cb_index = structure.topology.select('name CB')
+            ca_cb_bond = template.xyz[0, template_ca_index] - structure.xyz[0, cb_index]
+            structure.xyz[0, cb_index] += 0.25 * ca_cb_bond
+
+            #Add proline to the structure via MDTraj's dataframe capabilities
+            t, b = structure.topology.to_dataframe()
+            t['resSeq'] = i
+            structure = md.Trajectory(structure.xyz, md.Topology.from_dataframe(t, b))
+            backbone = backbone.stack(structure)
+            table, bonds = backbone.topology.to_dataframe()
+            resname = list(table.loc[table['chainID'] == 1, 'resName'])[0]
+            table['chainID'] = 0
+            table.loc[table['resSeq'] > nres, 'resSeq'] = i
+            table.loc[table['resSeq'] == i, 'resName'] = resname
+            table.loc[:, 'serial'] = np.arange(len(table)) + 1
+            top = md.Topology.from_dataframe(table, bonds)
+
+            #Adjust atom indices via MDTraj's dataframe capabilities
+            t2, b2 = top.to_dataframe()
+            proper_indices = t2['serial'].to_numpy() - 1
+            backbone = md.Trajectory(backbone.xyz[0, proper_indices], top)
+            top = backbone.topology
+            bond_n = top.select("resid " + str(i-1) + " and name N")[0]
+            bond_ca = top.select("resid " + str(i-1) + " and name CA")[0]
+            bond_r = top.select("resSeq " + str(i) + " and resname " + resname + " and not name C and not name N and not name CA and not name O")[0]
+            bond_c = top.select("resSeq " + str(i) + " and resname " + resname + " and not name C and not name N and not name CA and not name O")[0]
+
+            #Add bonds to topology
+            atoms = [atom for atom in top.atoms]
+            top.add_bond(atoms[np.where(proper_indices == bond_n)[0][0]], atoms[np.where(proper_indices == bond_r)[0][0]])
+            top.add_bond(atoms[np.where(proper_indices == bond_ca)[0][0]], atoms[np.where(proper_indices == bond_c)[0][0]])
+            backbone.topology = top
+
         else:
-            location = template.xyz[0, cur_n] + bond * 1.5
-        translate = location - structure.xyz[0, 0]
-        structure.xyz[0] += translate
-        t, b = structure.topology.to_dataframe()
-        t['resSeq'] = i
-        structure = md.Trajectory(structure.xyz, md.Topology.from_dataframe(t, b))
-        backbone = backbone.stack(structure)
-        table, bonds = backbone.topology.to_dataframe()
-        resname = list(table.loc[table['chainID'] == 1, 'resName'])[0]
-        table['chainID'] = 0
-        table.loc[table['resSeq'] > nres, 'resSeq'] = i
-        table.loc[table['resSeq'] == i, 'resName'] = resname
-        table.loc[:, 'serial'] = np.arange(len(table)) + 1
-        top = md.Topology.from_dataframe(table, bonds)
-        t2, b2 = top.to_dataframe()
-        proper_indices = t2['serial'].to_numpy() - 1
-        backbone = md.Trajectory(backbone.xyz[0, proper_indices], top)
-        top = backbone.topology
-        bond_n = top.select("resid " + str(i-1) + " and name N")[0]
-        bond_r = top.select("resname " + resname + " and not name C and not name N and not name CA and not name O")[0]
-        atoms = [atom for atom in top.atoms]
-        top.add_bond(atoms[np.where(proper_indices == bond_n)[0][0]], atoms[np.where(proper_indices == bond_r)[0][0]])
-        backbone.topology = top        
+            structure = md.load(filename2, standard_names=False)
+            sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
+            cur_index += structure.topology.n_atoms
 
-    i += 1
+            #Place sidechain where the N-hydrogen used to be
+            cur_h = template.topology.select("resSeq " + str(i) + " and name H")[0]
+            cur_n = template.topology.select("resSeq " + str(i) + " and name N")[0]
+            if letter != "A" and letter != "G":
+                #Adjust orientation of side chain, pointing away from the backbone to avoid clash
+                first_bond = template.xyz[0, cur_h] - template.xyz[0, cur_n]
+                cur_orientation = np.mean(structure.xyz[0, 1:], axis=0) - structure.xyz[0, 0]
+                rmat = rotmat(Vector(*cur_orientation), Vector(*first_bond))
+                structure.xyz[0] = (np.matmul(rmat, structure.xyz[0].T)).T
+            bond = template.xyz[0, cur_h] - template.xyz[0, cur_n]
+            #increase C--N bond length to a normal C--N bond
+            if letter == 'G':
+                location = template.xyz[0, cur_n] + bond
+            else:
+                location = template.xyz[0, cur_n] + bond * 1.5
+            translate = location - structure.xyz[0, 0]
+            structure.xyz[0] += translate
 
-backbone.save_pdb("combined.pdb")
+            #Adjust atom indices via MDTraj's dataframe capabilities
 
-with open("combined.pdb") as f:
-    lines = f.readlines()
+            t, b = structure.topology.to_dataframe()
+            t['resSeq'] = i
+            structure = md.Trajectory(structure.xyz, md.Topology.from_dataframe(t, b))
+            backbone = backbone.stack(structure)
+            table, bonds = backbone.topology.to_dataframe()
+            resname = list(table.loc[table['chainID'] == 1, 'resName'])[0]
+            table['chainID'] = 0
+            table.loc[table['resSeq'] > nres, 'resSeq'] = i
+            table.loc[table['resSeq'] == i, 'resName'] = resname
+            table.loc[:, 'serial'] = np.arange(len(table)) + 1
+            top = md.Topology.from_dataframe(table, bonds)
+            t2, b2 = top.to_dataframe()
+            proper_indices = t2['serial'].to_numpy() - 1
+            backbone = md.Trajectory(backbone.xyz[0, proper_indices], top)
 
-with open("output.pdb", "w") as f:
-    for line in lines:
-        if 'UNK' in line or 'CONECT' in line:
-            continue
-#         if line.startswith("ATOM"):
-#             if 'PRO' in line or 'GLU' in line or 'ASP' in line or 'CYS' in line or 'MET' in line:
-#                 l = line[:20] + "d    " + line[25:]
-#             else:
-#                 l = line[:20] + "p    " + line[25:]
-#         else:
-#             l = line
-        f.write(line)
-       
+            #Add bonds to topology
 
-def perturb_angle(molecule, residue_num, sigma):
+            top = backbone.topology
+            bond_n = top.select("resid " + str(i-1) + " and name N")[0]
+            bond_r = top.select("resname " + resname + " and not name C and not name N and not name CA and not name O")[0]
+            atoms = [atom for atom in top.atoms]
+            top.add_bond(atoms[np.where(proper_indices == bond_n)[0][0]], atoms[np.where(proper_indices == bond_r)[0][0]])
+            backbone.topology = top        
+
+        i += 1
+    print("Saving Initial File PDB before energy minimization: " + filename)
+    backbone.save_pdb(filename)
+
+    with open(filename, "r") as f:
+        lines = f.readlines()
+
+    with open(filename, "w") as f:
+        #remove unnecessary bonds from file
+        for line in lines:
+            if 'UNK' in line or 'CONECT' in line:
+                continue
+            f.write(line)
+    print("Removed unnecessary bond information: " + filename)
+   
+
+def perturb_angle(molecule, residue_num, sigma=0.01):
+    #helper function for randomly adjusting a peptoid side chain angle 
+    #(cannot simply use chi because it emerges from the nitrogen)
+    
+    #Monte Carlo step: energy function computed to minimize steric clash (min distance between residues ^ -2)
+    
     sidechain = sidechain_indices[residue_num]
     if len(sidechain) == 0:
         return
@@ -261,16 +257,17 @@ def perturb_angle(molecule, residue_num, sigma):
     rmat = rotmat(Vector(*first_atom), Vector(*normalized))
     sidechain_xyz = (np.matmul(rmat, sidechain_xyz.T)).T
     sidechain_xyz += n_coord
-#     cur_first_atom = np.copy(sidechain_xyz[0])
-#     sidechain_xyz += (ex_first_atom - cur_first_atom)
+
     molecule.xyz[0, sidechain] = sidechain_xyz
     new_energy = energy_function(calculate_min_dist(molecule, residue_num))
     if new_energy > cur_energy:
-        prob = np.exp(-1 * kT * (new_energy - cur_energy))
+        prob = np.exp(-50 * (new_energy - cur_energy))
         if np.random.uniform() > prob:
             molecule.xyz = xyz_copy
     
 def calculate_min_dist(molecule, residue_num):
+    #helper function to calculate the smallest distance between two non-hydrogen atoms from one residue to every other residue
+    
     res_list = []
     residue_xyz = molecule.xyz[0, sidechain_indices[residue_num]]
     residue_n = molecule.xyz[0, backbone_indices[residue_num][0]]
@@ -284,6 +281,7 @@ def calculate_min_dist(molecule, residue_num):
         coords = np.concatenate((backbone_indices[num], sidechain_indices[num]), dtype=np.int64)
         other_xyz = molecule.xyz[0, coords]
         for coord1 in residue_xyz:
+            #special consideration is given toward the alpha-carbon, because it can be within a bond's length of the backbone or another residue, which would be sterically unfavorable. 
             if np.any(residue_xyz[0] != coord1) and np.linalg.norm(coord1 - residue_n) < 0.2:
                 minvals[i] = 0.02
             elif np.linalg.norm(coord1 - residue_ca) < 0.2:
@@ -298,33 +296,47 @@ def calculate_min_dist(molecule, residue_num):
 def energy_function(mindists):
     return np.sum([x ** (-2) for x in mindists])
 
-sigma = 0.01
 
-def minimize_energy():
-    molecule = md.load('output.pdb', standard_names=False)
+def minimize_energy(sequence, minimum, filename):
+    #Run a sufficient number of Monte-Carlo steps until the residues are far enough apart from each other to allow a simulation to run.
+    print("Minimizing Energy....")
+    molecule = md.load(filename, standard_names=False)
     for k in range(900):
-        for j, letter in enumerate(args.seq[:-1]):
-            if args.mini == 'A+T' or args.mini == 'A-T':
+        if k > 0 and not k % 100:
+            print("Monte Carlo Round " + str(k))
+        for j, letter in enumerate(sequence):
+            
+            if minimum == 'A-T' or minimum == 'A+T':
                 if k < 3 * NUM_ITERS[letter]:
-                    perturb_angle(molecule, j, sigma)
+                    perturb_angle(molecule, j)
             else:
                 if k < NUM_ITERS[letter]:
-                    perturb_angle(molecule, j, sigma)
-    molecule.save_pdb('output.pdb')
+                    perturb_angle(molecule, j)
+    print("Minimized Energy!")
+    molecule.save_pdb(filename)
 
 #ADD HYDROGENS
-def add_hydrogens(file1, file2):
-    molecule = md.load(file1, standard_names=False)
+def add_hydrogens(sequence, filename):
+    print("Adding Hydrogens....")
+    molecule = md.load(filename, standard_names=False)
     new_mtop = molecule.topology
-    for j, letter in enumerate(args.seq):
+    
+    #Add hydrogens one residue at a time
+    for j, letter in enumerate(sequence):
+        print("Residue " + str(j+1) + ": " + FILENAMES[letter][:-1])
         sup = SVDSuperimposer()
         mtop = molecule.topology
         residue = [res for res in mtop.residues][j]
+        
+        #superimpose hydrogens from hydrogenated version of the residue onto nonhydrogenated version of the residue
         traj_h = md.load("residue_pdb/" + FILENAMES[letter] + ".pdb", standard_names=False)
         htop = traj_h.topology
         atoms = np.array([atom for atom in htop.atoms])
         bonds = [bond for bond in htop.bonds]
+        
+        #glycine and proline already have their sidechain hydrogens taken care of
         if letter != 'G' and letter != 'P':
+            
             fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not backbone"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
             fixed_coords = molecule.xyz[0, fixed_indices] 
             extra_backbone_indices = htop.select("name NL")
@@ -333,6 +345,8 @@ def add_hydrogens(file1, file2):
             hydrogen_indices = htop.select("element H and not name HA1 and not name HA2")
             bonded_atom_coords = []
             hydrogens = atoms[hydrogen_indices]
+            
+            #find what atom each sidechain hydrogen is attached to and record that
             for atom in hydrogens:
                 for bond in bonds:
                     if bond[1].index == atom.index:                 
@@ -343,27 +357,28 @@ def add_hydrogens(file1, file2):
             sup.run()
             rms = sup.get_rms()
             rot, tran = sup.get_rotran()
+            #superimpose hydrogens onto current structure
             hydrogen_coords = np.dot(traj_h.xyz[0, hydrogen_indices], rot) + tran
             bonds = hydrogen_coords - bonded_atom_coords
             bls = np.linalg.norm(bonds, axis=1)
+            #ensure hydrogen bond lengths are correct
             hydrogen_coords = bonded_atom_coords + bonds * (np.divide(0.11, bls)[:, np.newaxis])
             hydrogen_names = [atom.name for atom in hydrogens]
+            #Add hydrogen to the topology
             for name in hydrogen_names:
                 mtop.add_atom(name, md.element.hydrogen, residue)
             table, bonds = mtop.to_dataframe()
             new_mtop = md.Topology.from_dataframe(table, bonds)
             new_h_indices = new_mtop.select("resSeq " + str(j+1) + " and element H")
             temp = molecule.xyz[0]
-    #         print(new_h_indices)
-    #         print(hydrogen_coords)
             for num, idx in enumerate(new_h_indices):
                 temp = np.insert(temp, idx, hydrogen_coords[num], axis=0)
             molecule.xyz = np.array([temp])
+       
+        #similarly to previoius actions, add the alpha-hydrogens to the backbone.
         fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and backbone and not name O")
         fixed_backbone = molecule.xyz[0, fixed_backbone_indices]
-        moving_backbone_indices = htop.select("name NL or name CA or name CLP")
-#         print(moving_backbone_indices)
-        
+        moving_backbone_indices = htop.select("name NL or name CA or name CLP")        
         
         moving_backbone = traj_h.xyz[0, moving_backbone_indices]
         ha = htop.select("name HA1 or name HA3 or name HA2 or name HA")
@@ -380,6 +395,7 @@ def add_hydrogens(file1, file2):
             h = ca_coord + bond * (0.11 / bl)
         temp = molecule.xyz[0]
         if letter == "P":
+            #Add proline alpha-hydrogen
             mtop.add_atom("HA", md.element.hydrogen, residue)
             table, bonds = mtop.to_dataframe()
             new_mtop = md.Topology.from_dataframe(table, bonds)
@@ -401,23 +417,31 @@ def add_hydrogens(file1, file2):
                 temp = np.insert(temp, new_ha1_index, ha_coords[0], axis=0)
                 temp = np.insert(temp, new_ha2_index, ha_coords[1], axis=0)
         molecule.xyz = np.array([temp])
-    molecule.save_pdb(file2)
+        #save the new molecule
+    print("Added Hydrogens")
 
-def attach_ace_nme():
-    molecule = md.load("molecule.pdb", standard_names=False)
+    molecule.save_pdb(filename)
+
+def attach_ace_nme(minimum, filename):
+    #Attach end caps to molecule 
+    print("Attaching ACE and NME terminal caps")
+    molecule = md.load(filename, standard_names=False)
     ace = md.load('residue_pdb/ACEp_f.pdb')
     nme = md.load('residue_pdb/NMEp_f.pdb')
     ace_index = ace.topology.select('name CLP')[0]
     ace_attach = ace.xyz[0, ace_index]
     mol_nterm = NTERM_POSITION
     n_translate = mol_nterm - ace_attach
-    ace.xyz[0] += n_translate
-    
+    ace.xyz[0] += n_translate    
     n_bond = mol_nterm - molecule.xyz[0, molecule.topology.select("resid 0 and name N")[0]]
     ace.xyz[0] += n_bond * .3
     nme_attach = nme.xyz[0, nme.topology.select('name NL')[0]]
     nres = molecule.topology.n_residues
-    template_h = md.load("minima_pdb/" + mini_string + "_h.pdb", standard_names=False)
+    if minimum in MINIMA_FILENAMES.keys():
+        mini_string = MINIMA_FILENAMES[minimum]
+        template_h = md.load("minima_pdb/" + mini_string + "_h.pdb")
+    else:
+        template_h = md.load("minima_pdb/alphaD_plus_trans_h.pdb")
     if nres == 19:
         mol_cterm = template_h.xyz[0, 134]
     else:
@@ -442,35 +466,19 @@ def attach_ace_nme():
         i += 1
         table['chainID'] = 0
 
-#         molecule.topology = md.Topology.from_dataframe(table, bonds)
-#         table, bonds = molecule.topology.to_dataframe()
-#         resname = list(table.loc[table['chainID'] == 1, 'resName'])[0]
-#         table['chainID'] = 0
-#         table.loc[:, 'serial'] = np.arange(len(table)) + 1
         top = md.Topology.from_dataframe(table, bonds)
-#         t2, b2 = top.to_dataframe()
-#         proper_indices = t2['serial'].to_numpy() - 1
+
         molecule = md.Trajectory(molecule.xyz, top)
-    molecule.save_pdb('molecule.pdb')
+    molecule.save_pdb(filename)
 
-
-minimize_energy()
-# command = "obabel output.pdb -O output2.pdb -d --minimize --steps 1000 --sd"
-# subprocess.run(command.split(), stdout=subprocess.PIPE)
-add_hydrogens("output.pdb", "molecule.pdb")
-nres = attach_ace_nme()
-
-# add_hydrogens("output2.pdb", "molecule2.pdb")        
-# command = "obabel molecule.pdb -O molecule3.pdb -d --minimize --steps 1000 --sd"
-# subprocess.run(command.split(), stdout=subprocess.PIPE)
-
-fs = ("molecule.pdb",)
-
-for ff in fs:
-    with open(ff) as f:
+def pdb_to_peptoid_forcefield(sequence, filename):
+    print("Converting Peptide to Peptoid atom names")
+    with open(filename) as f:
         lines = f.readlines()
     atom_number = 1
-    with open(ff, "w") as f:
+
+    with open(filename, "w") as f:
+        #Adjust PDB file so it includes peptoid atom names, rather than peptide atom names for the caps and backbone. 
         for line in lines:
             if "MODEL" in line:
                 f.write(line)
@@ -491,7 +499,7 @@ for ff in fs:
                     str1 = line[13:16]
                 l = line[:6] + str0 + str1 + line[16:20] + str2 + line[29:]
                 f.write(l)
-            
+
         for line in lines:
             l = line
             if "ENDMDL" in line:
@@ -504,7 +512,7 @@ for ff in fs:
                 str0 = " " * (5 - numlen) + str(atom_number) + "  "
                 atom_number += 1
                 str2 = "p    "
-                nres = len(args.seq)
+                nres = len(sequence)
                 if nres > 10:
                     str3 = str(nres + 1) + "  "
                 else:
@@ -529,15 +537,11 @@ for ff in fs:
             elif line.startswith("ATOM"):
                 num_str = line[25:27]
                 cur_resnum = int(num_str)
-                cur_residue = " " + FILENAMES[args.seq[cur_resnum - 1]] + "    "
+                cur_residue = " " + FILENAMES[sequence[cur_resnum - 1]] + "    "
                 numlen = len(str(atom_number))
                 str0 = " " * (5 - numlen) + str(atom_number) + " "
                 atom_number += 1
-#                 if 'PRO' in line or 'GLU' in line or 'ASP' in line or 'CYS' in line or 'MET' in line:
-#                     str2 = "d    "
-#                 else:
-#                     str2 = "p    "
-                
+
                 if line[13:15] == "N ":
                     str1 = " NL "
                 elif line[13:15] == "C ":
@@ -552,8 +556,69 @@ for ff in fs:
                     str1 = line[12:16]
                 l = line[:6] + str0 + str1 + cur_residue + line[25:]
             f.write(l)
-        
-# command = "obabel molecule.pdb -O molecule.pdb"
-# subprocess.run(command.split(), stdout=subprocess.PIPE)
-command = "rm output.pdb combined.pdb"
-subprocess.run(command.split(), stdout=subprocess.PIPE)
+    print("Done!")
+def create_peptoid(sequence, minimum, filename):
+    load_sequence(sequence, minimum, filename)
+    minimize_energy(sequence, minimum, filename)
+    add_hydrogens(sequence, filename)
+    attach_ace_nme(minimum, filename)
+    pdb_to_peptoid_forcefield(sequence, filename)
+    return md.load(filename, standard_names=False)
+    
+def run():
+    parser = argparse.ArgumentParser(
+        description="Molecule Inserter for peptoids"
+    )
+    parser.add_argument(
+        "--seq",
+        type=str,
+        default=None,
+        metavar="seq",
+        help="Input Sequence"
+    )
+    parser.add_argument(
+        "--mini",
+        type=str,
+        default=None,
+        metavar="mini",
+        help="minimum configuration"
+    )
+    parser.add_argument(
+        "--file",
+        type=str,
+        default="molecule",
+        metavar="file",
+        help="filename under which to save final structure"
+    )
+    args = parser.parse_args()
+
+    if args.seq is None:
+        raise ValueError("Sequence Entry Needed")
+
+    # Load the minimum that the peptoid is in
+
+    if args.file.endswith(".pdb"):
+        fname = args.file
+    else:
+        fname = args.file + ".pdb"
+    path = os.path.join(os.getcwd(), fname)
+    num_backups = 0
+    while os.path.exists(path):
+        if num_backups == 0:
+            print("WARNING: " + fname[:-4]  + ".pdb already exists. Backing up file to " + fname[:-4] + "1.pdb")
+        else:
+            print("WARNING: " + fname[:-4] + str(num_backups) + ".pdb already exists. Backing up file to " + fname[:-4] + str(num_backups + 1) + ".pdb")
+        num_backups += 1
+        path = os.path.join(os.getcwd(), fname[:-4] + str(num_backups) + ".pdb")
+    while num_backups > 0:
+        if num_backups == 1:
+              command = "cp " + fname + " " + fname[:-4] + "1.pdb"
+        else:
+              command = "cp " + fname[:-4] + str(num_backups - 1) + ".pdb" + " " + fname[:-4] + str(num_backups) + ".pdb"
+        subprocess.run(command.split(), stdout=subprocess.PIPE)
+        num_backups -= 1
+    
+    create_peptoid(args.seq, args.mini, fname)
+
+
+run()

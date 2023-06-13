@@ -4,7 +4,7 @@ import sys
 
 def remove_backbone(filename):
     mol = md.load(filename)
-    correct_indices = np.array(list(mol.topology.select('not name NL and not name CA and not name CLP and not name OL and not name HA1 and not name HA2')))
+    correct_indices = np.array(list(mol.topology.select('not name NL and not name CA and not name CLP and not name OL and not name HA1 and not name HA2 and not name HA')))
     table, bonds = mol.topology.to_dataframe()
     onswitch = np.zeros(len(table), dtype=np.bool)
     onswitch[correct_indices] = 1
