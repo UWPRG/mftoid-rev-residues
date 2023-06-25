@@ -29,3 +29,32 @@ Note: In bondtypes.itp/angletypes.itp/etc., you only need to add the lines with 
 Lastly, add 'TC   12.01100 ; peptoid carbonyl carbon' to atomtypes.atp in your FF directory.
 
 Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoid amino acid mimics and produce topologies using the updated CHARMM36 FF.
+
+
+### STRUCTURE MAKER USAGE INSTRUCTIONS
+
+The structure maker creates a "pdb" file of a peptoid with a natural amino acid sequence in a desired minimum configuration. It makes use of Python 3.7, MDTraj 1.9.4, and Bio.PDB (biopython 1.79). The packages may be installed with Anaconda. 
+
+Clone the repository locally or download the "structure_maker" directory. Then, using the command prompt, enter the structure_maker directory. Type the following command, and a structural file will be created for your use (the name of which is customizable): 
+
+**python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME] **
+
+Notes:
+1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B) and histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J).
+2. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
+  	A-T: alpha minus, trans
+   	A-C: alpha minus, cis
+   	A+T: alpha plus, trans
+   	A+C: alpha plus, cis
+    	AD-T: alpha-D minus, trans
+   	AD-C: alpha-D minus, cis
+	AD+T: alpha-D plus, trans
+   	AD+C: alpha-D plus, cis
+   	C7B-T: C7-beta minus, trans
+   	C7B-C: C7-beta minus, cis
+	C7B+T: C7-beta plus, trans
+   	C7B+C: C7-beta plus, cis
+   Please note not every amino acid sequence has a valid structure in any given minimum (proline, for example, may cause serious problems): be sure to use a valid minimum for your sequence.
+3. FILENAME: any filename is valid; however, if the filename does not end with ".pdb", that extension will be added automatically.
+
+You may then use [FILENAME].pdb in your future simulations.
