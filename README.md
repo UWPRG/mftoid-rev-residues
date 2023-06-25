@@ -37,7 +37,7 @@ The structure maker creates a "pdb" file of a peptoid with a natural amino acid 
 
 Clone the repository locally or download the "structure_maker" directory. Then, using the command prompt, enter the structure_maker directory. Type the following command, and a structural file will be created for your use (the name of which is customizable): 
 
-**python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME] **
+**python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]**
 
 Notes:
 1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B) and histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J).
