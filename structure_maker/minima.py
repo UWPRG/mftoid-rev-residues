@@ -127,7 +127,7 @@ def load_sequence(sequence, minimum, filename):
 
             #put proline ring indices where they belong
             orientation.xyz[0, pro_sidechain_indices] = np.dot(orientation.xyz[0, pro_sidechain_indices], rot) + tran
-            structure = md.load("PROd.pdb", standard_names=False)
+            structure = md.load("noh_residue_pdb/PROd.pdb", standard_names=False)
             cur_index += structure.topology.n_atoms
 
             sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
@@ -557,7 +557,7 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                 l = line[:6] + str0 + str1 + cur_residue + line[25:]
             f.write(l)
     print("Done!")
-def create_peptoid(sequence, minimum, filename):
+def create_peptoid(sequence, minimum="alphaD_plus_trans", filename="molecule.pdb"):
     load_sequence(sequence, minimum, filename)
     minimize_energy(sequence, minimum, filename)
     add_hydrogens(sequence, filename)
