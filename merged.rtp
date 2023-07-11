@@ -970,3 +970,48 @@
            NL      -CLP     CAT     HNT
            -CLP    CAT      NL      -OL
 
+[ NTBp ]
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CA   CT2    0.030  1
+          HA1   HB2    0.090  2
+          HA2   HB2    0.090  3
+           CB    CT   -0.090  4
+          CG1   CT3   -0.270  5
+         HG11   HA3    0.090  6
+         HG12   HA3    0.090  7
+         HG13   HA3    0.090  8
+          CG2   CT3   -0.270  9
+         HG21   HA3    0.090 10
+         HG22   HA3    0.090 11
+         HG23   HA3    0.090 12
+          CG3   CT3   -0.270 13
+         HG31   HA3    0.090 14
+         HG32   HA3    0.090 15
+         HG33   HA3    0.090 16
+          CLP    TC    0.510 17
+           OL     O   -0.510 18
+  [ bonds ]
+           CB    NL
+          CG1    CB
+          CG2    CB
+          CG3    CB
+           NL    CA
+           NL  -CLP
+          CLP    CA
+          CLP   +NL
+           CA   HA1
+           CA   HA2
+          CG1  HG11
+          CG1  HG12
+          CG1  HG13
+          CG2  HG21
+          CG2  HG22
+          CG2  HG23
+          CG3  HG31
+          CG3  HG32
+          CG3  HG33
+           OL   CLP
+  [ impropers ]
+           NL  -CLP    CA    CB
+          CLP   +NL    CA    OL
