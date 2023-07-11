@@ -130,6 +130,10 @@ CP1   TC    NH1  CP1 9 0.0000  1.25520  4 ; from CP1-C-N-CP1
 CP1   TC    NH1  CP3 9 180.00  11.5060  2 ; from CP1-C-N-CP3
 CP1   TC    NH1  CP3 9 0.0000  1.25520  4 ; from CP1-C-N-CP3
 CP1   TC    NH1  CT2  9 180.00  11.5060  2 ; from CP1-C-N-C
+O      TC   NH1   CT  9 180.00  10.8784  2 ; adapted from CGenFF
+CT3    TC   NH1   CT  9 180.00  10.8784  2 ; adapted from CGenFF
+TC    NH1    CT  CT3  9 0.0000  7.53120  1 ; adapted from CGenFF
+CT2   NH1    CT  CT3  9 0.0000  12.8081  1 ; adapted from CGenFF
 
 ; Original CHARMM...
 
