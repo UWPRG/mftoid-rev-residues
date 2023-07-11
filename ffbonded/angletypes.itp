@@ -61,7 +61,8 @@
      NH1      CP1      CP2     5   110.80    585.76   0.000000    0.000000 ; from N--CP1--CP2
      HB1      CP1       TC     5   112.00    418.40   0.000000    0.000000 ; from HB1--CP1--C
      NH1      CP1      HB1     5   112.00    401.66   0.000000    0.000000 ; from N--CP1--HB1
-      CT      NH1       TC     5   109.60    338.90   0.000000    0.000000 ; for n-tbu from CGenFF
+      CT      NH1      CT2     5   109.60    338.90   0.000000    0.000000 ; for n-tbu from CGenFF
+      CT      NH1       TC     5   121.00    376.56   0.000000    0.000000 ; for n-tbu from CGenFF
 
 ; Original CHARMM...
 
