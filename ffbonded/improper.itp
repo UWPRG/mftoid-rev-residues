@@ -8,5 +8,8 @@
      NH1     X       X       CT2        2     0.00        167.36
      NH1     X       X       CT1        2     0.00        167.36
      NH1     TC       CP1      CP3      2     0.000       0.00000
+     NH1     TC       CP1      CP3      2     0.000      0.00000
+     NH1     TC       CT2       CT      2     0.000      0.00000
+
 ; Original CHARMM...
 
