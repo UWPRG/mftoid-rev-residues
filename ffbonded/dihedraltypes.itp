@@ -141,6 +141,10 @@ CT2   NH1    CA   CA  9 180.00  7.97900  1 ; from CGenFF
 CT2   NH1    CA   CA  9 180.00  7.21468  1 ; from CGenFF
 TC    NH1    CA   CA  9 180.00  0.83600  1 ; from CGenFF
 CT2    TC   NH1   CT  9 180.00  10.8784  2 ; from CT2-C-N-CT2/CT3
+CT2    TC   NH1   CT  9 0.0000  6.69440  1 ; from CT2-C-NH1-CX
+CT2    TC   NH1   CA  9 0.0000  6.69440  1 ; from CT2-C-NH1-CX
+CT2    TC   NH1   CA  9 180.00  10.4600  2 ; from CT2-C-NH1-CX
+
 
 ; Original CHARMM...
 
