@@ -134,7 +134,12 @@ O      TC   NH1   CT  9 180.00  10.8784  2 ; adapted from CGenFF
 CT3    TC   NH1   CT  9 180.00  10.8784  2 ; adapted from CGenFF
 TC    NH1    CT  CT3  9 0.0000  7.53120  1 ; adapted from CGenFF
 CT2   NH1    CT  CT3  9 0.0000  12.8081  1 ; adapted from CGenFF
-
+CT3    TC   NH1   CA  9 0.0000  6.68000  1 ; from CG321 CG2O1 NG2S0 CG2R61
+CT3    TC   NH1   CA  9 180.00  10.4500  1 ; from CG321 CG2O1 NG2S0 CG2R61
+O      TC   NH1   CA  9 0.0000  0.00000  1 ; from CGenFF
+CT2   NH1    CA   CA  9 180.00  7.97900  1 ; from CGenFF
+CT2   NH1    CA   CA  9 180.00  7.21468  1 ; from CGenFF
+TC    NH1    CA   CA  9 180.00  0.83600  1 ; from CGenFF
 ; Original CHARMM...
 
 
