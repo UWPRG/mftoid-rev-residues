@@ -1015,3 +1015,44 @@
   [ impropers ]
            NL  -CLP    CA    CB
           CLP   +NL    CA    OL
+
+[ NPHp ] ; N-phenyl peptoid
+  [ atoms ]
+           NL   NH1   -0.210  0
+           CB    CA    0.000  1
+          CG1    CA   -0.115  2
+          HG1    HP    0.115  3
+          CD1    CA   -0.115  4
+          HD1    HP    0.115  5
+           CE    CA   -0.115  6
+           HE    HP    0.115  7
+          CG2    CA   -0.115  8
+          HG2    HP    0.115  9
+          CD2    CA   -0.115 10
+          HD2    HP    0.115 11
+           CA   CT2    0.030 12
+          HA1   HB2    0.090 13
+          HA2   HB2    0.090 14
+          CLP    TC    0.510 15
+           OL     O   -0.510 16
+  [ bonds ]
+          -CLP  NL
+            NL  CB
+            CB  CG1
+            CB  CG2
+           CG1  CD1
+           CD1  CE
+            CE  CD2
+           CG2  CD2
+           CD1  HD1
+            CE  HE
+           CD2  HD2
+            NL  CA
+            CA  HA1
+            CA  HA2
+            CA  CLP
+           CLP  OL
+           CLP +NL
+  [ impropers ]
+            NL    -CLP    CA    CB
+            CLP    CA    +NL     OL
