@@ -63,6 +63,7 @@
      NH1      CP1      HB1     5   112.00    401.66   0.000000    0.000000 ; from N--CP1--HB1
       CT      NH1      CT2     5   109.60    338.90   0.000000    0.000000 ; for n-tbu from CGenFF
       CT      NH1       TC     5   121.00    376.56   0.000000    0.000000 ; for n-tbu from CGenFF
-
+      TC      NH1       CA     5   120.00    418.40   0.000000    0.000000 ; fentanyl, Lesnik et al. for n-phenyl
+      CA      NH1      CT2     5   119.50    351.46   0.000000    0.000000 ; from CGenFF for n-phenyl
 ; Original CHARMM...
 
