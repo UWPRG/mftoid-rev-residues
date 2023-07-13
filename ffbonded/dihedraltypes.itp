@@ -49,6 +49,13 @@
      CT2      NH1      CT2      CT3      9     0.00      1.6736     1 ; from weiser/santiso
      CT2      NH1      CT2      CT3      9     0.00      0.8368     2 ; from weiser/santiso
      CT2      NH1      CT2      CT3      9     180.00    1.2552     3 ; from weiser/santiso
+     CG2R61   CG2R61   CT2      NH1      9     0.00      0.497896   2
+     CG2R61   CG2R61   CT2      NH1      9     180.0     0.552288   4
+     CG2R61   CG2R61   CT2      NH1      9     180.0     0.054392   6
+     CG2R61   CG2R61   CT2      CT3      9     180.0     0.96232    2
+     H        OH1      CG2R61   CG2R61   9     180.0     4.14216    2
+     OH1      CG2R61   CG2R61   CG2R61   9     180.0     12.9704    2
+     OH1      CG2R61   CG2R61   HGR61    9     180.0     17.5728    2
 ; Additional dihedrals required for ACE/NME termini
      H        NH1       TC      CT2     9         180.0    10.4600  2 ; from H NH1 C CT2
      O        TC       NH1        H     9         180.0    10.4600  2 ; from O C NH1 H

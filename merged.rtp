@@ -970,6 +970,62 @@
            NL      -CLP     CAT     HNT
            -CLP    CAT      NL      -OL
 
+[ NSPE ] ;for both nrpe and nspe we can rename this one if you want!
+  [ atoms ]
+           NL NH1    -0.42 0
+          CB1 CT2     0.12 1
+          HB1 HA2     0.09 2
+          CB2 CT3    -0.27 3
+          HB2 HA3     0.09 4
+          HB3 HA3     0.09 5
+          HB4 HA3     0.09 6
+           CG CG2R61  0.00 7
+          CD1 CG2R61 -0.15 8
+          HD1 HGR61   0.15 9
+          CD2 CG2R61 -0.15 10
+          HD2 HGR61   0.15 11
+          CE1 CG2R61 -0.15 12
+          HE1 HGR61   0.15 13
+          CE2 CG2R61 -0.15 14
+          HE2 HGR61   0.15 15
+           CH CG2R61 -0.15 16
+           HC HGR61   0.15 17
+           CA CT2     0.03 18
+          HA1 HB2     0.09 19
+          HA2 HB2     0.09 20
+          CLP TC      0.51 21
+           OL O      -0.51 22
+  [ bonds ]
+          -CLP   NL
+           NL    CB1
+           CB1   CG
+           CB1   CB2
+           CG    CD1
+           CG    CD2
+           CD1   CE1
+           CD2   CE2
+           CE1   CH
+           CE2   CH
+           CH    HC
+           CA    HA1
+           CA    HA2
+           CB1   HB1
+           CB2   HB2
+           CB2   HB3
+           CB2   HB4
+           CD1   HD1
+           CD2   HD2
+           CE1   HE1
+           CE2   HE2
+           NL    CA
+           CA    CLP
+           CLP   OL
+           CLP  +NL
+
+  [ impropers ]
+           NL  -CLP   CA   CB1
+           CLP  CA   +NL   OL
+
 [ NTBp ]
   [ atoms ]
            NL   NH1   -0.210  0
