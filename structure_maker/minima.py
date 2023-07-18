@@ -30,7 +30,9 @@ FILENAMES = {
     'T': 'THRp',
     'W': 'TRPp',
     'Y': 'TYRp',
-    'V': 'VALp'
+    'V': 'VALp',
+    '1': 'NTBp',
+    '2': 'NPHp'
 }
 
 
@@ -71,7 +73,9 @@ NUM_ITERS = {
     'T': 300,
     'W': 300,
     'Y': 300,
-    'V': 300
+    'V': 300,
+    '1': 500,
+    '2': 300
 }
 
 NTERM_POSITION = np.array([0.0264, -2.7761, 2.590])
@@ -333,11 +337,12 @@ def add_hydrogens(sequence, filename):
         htop = traj_h.topology
         atoms = np.array([atom for atom in htop.atoms])
         bonds = [bond for bond in htop.bonds]
-        
         #glycine and proline already have their sidechain hydrogens taken care of
         if letter != 'G' and letter != 'P':
-            
-            fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not backbone"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
+            if letter.isupper():
+                fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not backbone"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
+            else:
+                fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not name C and not name CA and not name N and not name O"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
             fixed_coords = molecule.xyz[0, fixed_indices] 
             extra_backbone_indices = htop.select("name NL")
             moving_sidechain_indices = htop.select("not name CLP and not name OL and not name NL and not name CA and not element H")
@@ -345,7 +350,6 @@ def add_hydrogens(sequence, filename):
             hydrogen_indices = htop.select("element H and not name HA1 and not name HA2")
             bonded_atom_coords = []
             hydrogens = atoms[hydrogen_indices]
-            
             #find what atom each sidechain hydrogen is attached to and record that
             for atom in hydrogens:
                 for bond in bonds:
@@ -376,7 +380,10 @@ def add_hydrogens(sequence, filename):
             molecule.xyz = np.array([temp])
        
         #similarly to previoius actions, add the alpha-hydrogens to the backbone.
-        fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and backbone and not name O")
+        if letter.isupper():
+            fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and backbone and not name O")
+        else:
+            fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and name N or resid " + str(j) + " and name CA or resid " + str(j) + " and name C")
         fixed_backbone = molecule.xyz[0, fixed_backbone_indices]
         moving_backbone_indices = htop.select("name NL or name CA or name CLP")        
         
