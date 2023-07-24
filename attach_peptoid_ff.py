@@ -1,3 +1,6 @@
+import os
+import re
+
 path = os.environ.get("GMXLIB")
 rdf = os.listdir(path)
 charmms = []
@@ -42,20 +45,20 @@ for direc in rdf:
 
 cd = os.getcwd()
 with open(os.path.join(cd, "merged.rtp"), "r") as f1:
-    with open(os.path.oin(latest_dir, "merged.rtp"), "a+") as f2:
+    with open(os.path.join(latest_dir, "merged.rtp"), "a+") as f2:
         f2.write(f1.read())
 with open(os.path.join(cd, "ffnonbonded.itp"), "r") as f1:
-    with open(os.path.oin(latest_dir, "ffnonbonded.itp"), "a+") as f2:
+    with open(os.path.join(latest_dir, "ffnonbonded.itp"), "a+") as f2:
         f2.write(f1.read())
 with open(os.path.join(cd, "ffbonded/bondtypes.itp"), "r") as f1:
-    with open(os.path.oin(latest_dir, "ffbonded.itp"), "a+") as f2:
+    with open(os.path.join(latest_dir, "ffbonded.itp"), "a+") as f2:
         f2.write(f1.read())
 with open(os.path.join(cd, "ffbonded/angletypes.itp"), "r") as f1:
-    with open(os.path.oin(latest_dir, "ffbonded.itp"), "a+") as f2:
+    with open(os.path.join(latest_dir, "ffbonded.itp"), "a+") as f2:
         f2.write(f1.read())
 with open(os.path.join(cd, "ffbonded/dihedraltypes.itp"), "r") as f1:
-    with open(os.path.oin(latest_dir, "ffbonded.itp"), "a+") as f2:
+    with open(os.path.join(latest_dir, "ffbonded.itp"), "a+") as f2:
         f2.write(f1.read())
 with open(os.path.join(cd, "ffbonded/improper.itp"), "r") as f1:
-    with open(os.path.oin(latest_dir, "ffbonded.itp"), "a+") as f2:
+    with open(os.path.join(latest_dir, "ffbonded.itp"), "a+") as f2:
         f2.write(f1.read())
