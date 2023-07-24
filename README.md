@@ -20,6 +20,12 @@ Download the CHARMM36 forcefield from the MacKerell Lab website; there have been
 
 To update the downloaded version of your CHARMM FF for peptoid amino acid mimic capabilities, start by copying the information found in this Github repository in the merged.rtp file directly into the merged.rtp doc in your CHARMM36 FF file.
 
+After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36 force field. Additionally, ensure you have Python3 installed. Then, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
+
+**python attach_peptoid_ff.py**
+
+Otherwise, you may update your force field files manually:
+
 Next, add the peptoid parameter TC found here in ffnonbonded.itp into the ffnonbonded.itp doc in your CHARMM36 FF file.
 
 Next, add the information contained here in the ffbonded directory to the ffbonded.itp doc in your CHARMM36 FF file. There are 4 main sections of the ffbonded.itp file; add bondtypes.itp to the [bondtypes] section, angletypes.itp to the [angletypes] section, dihedraltypes.itp to the first [dihedraltypes] section, and improper.itp to the second [dihedraltypes] section (it should mention impropers).
@@ -40,7 +46,7 @@ Clone the repository locally or download the "structure_maker" directory. Then, 
 **python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]**
 
 Notes:
-1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B) and histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J).
+1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B), histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J), as well as a tert-butyl side chain (code: 1) and a phenyl side chain (code: 2).
 2. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
   	A-T: alpha minus, trans
    	A-C: alpha minus, cis
