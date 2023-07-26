@@ -76,6 +76,20 @@
        O       TC      NH1      CT1     9    180.000000   10.460000 2 ; from O C NH1 CT1
      CT2      CT1      NH1      CT2     9    180.000000   10.878400 2 ; from CT2 C N CT2
      CT3      CT1      NH1      CT2     9    180.000000   10.878400 2 ; from CT3 C N CT2
+     CT2     CG2R61   CG2R61   CG2R61   9    180.000000   12.970400 2 ; for nbrpe
+     HGR61   CG2R61   CG2R61   CT2      9    180.000000   17.572800 2 ; for nbrpe
+     HA2      CT2     CG2R61   CG2R61   9      0.000000    0.000000 6 ; for nbrpe
+     CG2R61  CG2R61   CT2      CT2      9    180.000000    1.004160 2 ; for nbrpe
+     BRGR1   CG2R61   CG2R61   HGR61    9    180.000000    12.55200 2 ; for nbrpe
+     CLGR1   CG2R61   CG2R61   HGR61    9    180.000000    12.55200 2 ; for nclpe
+     CG2R61  CG2R61   CT2      NH1      9          0.00    0.497896 2 ; for npm
+     CG2R61  CG2R61   CT2      NH1      9         180.0    0.552288 4 ; for npm
+     CG2R61  CG2R61   CT2      NH1      9         180.0    0.054392 6 ; for npm
+     CT2     CT2      OG301    CT3      9      0.000000    1.213360 2 ; for nme
+     CT2     CT2      OG301    CT3      9      0.000000    1.799120 3 ; for nme
+     HA2     CT2      OG301    CT3      9      0.000000    1.188256 3 ; for nme
+     HA3     CT3      OG301    CT2      9      0.000000    1.188256 3 ; for nme
+
 ; dihedrals required for additional residues, 
 CT3    TC   NH1   CT1  9  0.000000  6.694400  1
 CT3    TC   NH1   CT1  9 180.000000  10.460000  2

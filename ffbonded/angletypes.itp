@@ -41,6 +41,13 @@
    OH1       CT2      NH1      5   110.100000   633.457600   0.00000000         0.00 ; from OH1 CT2 CT1/CT2
    CT2       NH1      CT1      5   113.500000   488.272800   0.25610000      9338.69 ; from CT2 CT2 CT1
    NH1       CT2      CT1      5   113.500000   488.272800   0.25610000      9338.69 ; from CT2 CT2 CT1
+   CT2       CT2     CG2R61    5   107.5000     433.462400   0.00000000         0.00 ; for nbrpe
+   CT2     CG2R61    CG2R61    5   122.300000   383.254400   0.00000000         0.00 ; for nbrpe
+   HA2       CT2     CG2R61    5   107.500000   412.542400   0.00000000         0.00 ; for nbrpe
+   CT2       CT2     OG301     5   111.500000   376.560000   0.00000000         0.00 ; for nme
+   OG301     CT2     HA2       5   108.890000   384.091200   0.00000000         0.00 ; for nme
+   OG301     CT3     HA3       5   108.890000   384.091200   0.00000000         0.00 ; for nme
+   CT2      OG301    CT3       5   109.700000   794.960000   0.00000000         0.00 ; for nme
 ; for additional side chain chemistries
      NH1      CT2        S     5   119.20    486.10   0.000000    0.000000 ; adapted from CGenFF
      NH1      CT1      OH1     5   112.79    623.00   0.000000    0.000000 ; adapted from CGenFF

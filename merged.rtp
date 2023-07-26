@@ -970,6 +970,8 @@
            NL      -CLP     CAT     HNT
            -CLP    CAT      NL      -OL
 
+; Additional Residues requested by CLC + Co.
+
 [ NSPE ] ;for both nrpe and nspe we can rename this one if you want!
   [ atoms ]
            NL NH1    -0.42 0
@@ -1112,3 +1114,311 @@
   [ impropers ]
             NL    -CLP    CA    CB
             CLP    CA    +NL     OL
+
+[ NPM ] ; Npm residue
+  [ atoms ]
+           NL NH1    -0.42 0
+           CB CT2     0.12 1
+          HB1 HA2     0.09 2
+          HB2 HA2     0.09 3
+           CG CG2R61 -0.09 4
+          CD1 CG2R61 -0.15 5
+          HD1 HGR61   0.15 6
+          CD2 CG2R61 -0.15 7
+          HD2 HGR61   0.15 8
+          CE1 CG2R61 -0.15 9
+          HE1 HGR61   0.15 10
+          CE2 CG2R61 -0.15 11
+          HE2 HGR61   0.15 12
+           CH CG2R61 -0.15 13
+           HC HGR61   0.15 14
+           CA CT2     0.03 15
+          HA1 HB2     0.09 16
+          HA2 HB2     0.09 17
+          CLP TC      0.51 18
+           OL O      -0.51 19
+  [ bonds ]
+       -CLP  NL
+        NL   CB
+        CB   HB1
+        CB   HB2
+        CB   CG
+        CG   CD1
+        CG   CD2
+        CD1  HD1
+        CD2  HD2
+        CD1  CE1
+        CD2  CE2
+        CE1  CH
+        CE2  CH
+        CE1  HE1
+        CE2  HE2
+        CH   HC
+        NL   CA
+        CA   HA1
+        CA   HA2
+        CA   CLP
+        CLP  OL
+        CLP +NL
+  [ impropers ]
+        NL -CLP  CA CB
+        CLP  CA +NL OL
+
+[ NOE ] ; Nser or Noe residue
+  [ atoms ]
+           NL NH1    -0.42 0
+           CB CT2    -0.12 1
+          HB1 HA2     0.09 2
+          HB2 HA2     0.09 3
+           CC CT2     0.12 4
+          HC1 HA2     0.09 5
+          HC2 HA2     0.09 6
+          OHT OH1    -0.60 7
+          HHT H       0.45 8
+           CA CT2     0.03 9
+          HA1 HB2     0.09 10
+          HA2 HB2     0.09 11
+          CLP TC      0.51 12
+           OL O      -0.51 13
+
+  [ bonds ]
+       -CLP   NL
+        NL    CB
+        CB    HB1
+        CB    HB2
+        CB    CC
+        CC    HC1
+        CC    HC2
+        CC    OHT
+        OHT   HHT
+        NL    CA
+        CA    HA1
+        CA    HA2
+        CA    CLP
+        CLP   OL
+        CLP  +NL
+
+  [ impropers ]
+        NL -CLP CA CB
+        CLP CA +NL OL
+[ NCE ] ; Nglu or Nce residue (with a negative one charge)
+  [ atoms ]
+           NL NH1    -0.42 0
+           CB CT2    -0.18 1
+          HB1 HA2     0.09 2
+          HB2 HA2     0.09 3
+           CC CT2    -0.21 4
+          HC1 HA2     0.09 5
+          HC2 HA2     0.09 6
+           CD CC      0.54 7
+          OE1 OC     -0.65 8
+          OE2 OC     -0.65 9
+           CA CT2     0.03 10
+          HA1 HB2     0.09 11
+          HA2 HB2     0.09 12
+          CLP TC      0.51 13
+           OL O      -0.51 14
+
+  [ bonds ]
+       -CLP    NL
+        NL     CB
+        CB     HB1
+        CB     HB2
+        CB     CC
+        CC     HC1
+        CC     HC2
+        CC     CD
+        CD     OE1
+        CD     OE2
+        NL     CA
+        CA     HA1
+        CA     HA2
+        CA     CLP
+        CLP    OL
+        CLP   +NL
+
+  [ impropers ]
+        NL -CLP CA CB
+        CLP CA +NL OL
+        CD  CC  OE1 OE2
+[ NCEn ] ; Nglu or Nce with a neutral charge (protonated)
+  [ atoms ]
+           NL NH1    -0.42 0
+           CB CT2    -0.18 1
+          HB1 HA2     0.09 2
+          HB2 HA2     0.09 3
+           CC CT2    -0.18 4
+          HC1 HA2     0.09 5
+          HC2 HA2     0.09 6
+           CD CC      0.77 7
+          OE1 OB     -0.50 8
+          OE2 OH1    -0.55 9
+          HE2 H       0.45 10
+           CA CT2     0.07 11
+          HA1 HB2     0.09 12
+          HA2 HB2     0.09 13
+          CLP TC      0.51 14
+           OL O      -0.51 15
+
+  [ bonds ]
+       -CLP    NL
+        NL     CB
+        CB     HB1
+        CB     HB2
+        CB     CC
+        CC     HC1
+        CC     HC2
+        CC     CD
+        CD     OE1
+        CD     OE2
+        OE2    HE2
+        NL     CA
+        CA     HA1
+        CA     HA2
+        CA     CLP
+        CLP    OL
+        CLP   +NL
+
+  [ impropers ]
+        NL -CLP CA CB
+        CLP CA +NL OL
+        CD  CC  OE1 OE2
+[ NAEk ] ; Nae with +1 charge
+  [ atoms ]
+           NL NH1    -0.420 0
+           CB CT2    -0.180 1
+          HB1 HA2     0.110 2
+          HB2 HA2     0.110 3
+           CC CT2     0.240 4
+          HC1 HA2     0.120 5
+          HC2 HA2     0.120 6
+          NH1 NH3    -0.300 7
+          HH1 HC      0.330 8
+          HH2 HC      0.330 9
+          HH3 HC      0.330 10
+           CA CT2     0.030 11
+          HA1 HB2     0.090 12
+          HA2 HB2     0.090 13
+          CLP TC      0.510 14
+           OL O      -0.510 15
+
+  [ bonds ]
+       -CLP    NL
+        NL     CB
+        CB     HB1
+        CB     HB2
+        CB     CC
+        CC     HC1
+        CC     HC2
+        CC     NH1
+        NH1    HH1
+        NH1    HH2
+        NH1    HH3
+        NL     CA
+        CA     HA1
+        CA     HA2
+        CA     CLP
+        CLP    OL
+        CLP   +NL
+
+  [ impropers ]
+        NL -CLP CA CB
+        CLP CA +NL OL
+[ NABk ] ; Nab with +1 charge
+  [ atoms ]
+           NL NH1    -0.420 0
+           CB CT2    -0.180 1
+          HB1 HA2     0.110 2
+          HB2 HA2     0.110 3
+           CC CT2    -0.180 4
+          HC1 HA2     0.090 5
+          HC2 HA2     0.090 6
+           CD CT2    -0.180 7
+          HD1 HA2     0.090 8
+          HD2 HA2     0.090 9
+           CE CT2     0.240 10
+          HE1 HA2     0.120 11
+          HE2 HA2     0.120 11
+          NH1 NH3    -0.300 12
+          HH1 HC      0.330 13
+          HH2 HC      0.330 14
+          HH3 HC      0.330 15
+           CA CT2     0.030 16
+          HA1 HB2     0.090 17
+          HA2 HB2     0.090 18
+          CLP TC      0.510 19
+           OL O      -0.510 20
+
+  [ bonds ]
+       -CLP    NL
+        NL     CB
+        CB     HB1
+        CB     HB2
+        CB     CC
+        CC     HC1
+        CC     HC2
+        CC     CD
+        CD     HD1
+        CD     HD2
+        CD     CE
+        CE     HE1
+        CE     HE2
+        CE     NH1
+        NH1    HH1
+        NH1    HH2
+        NH1    HH3
+        NL     CA
+        CA     HA1
+        CA     HA2
+        CA     CLP
+        CLP    OL
+        CLP   +NL
+
+  [ impropers ]
+        NL -CLP CA CB
+        CLP CA +NL OL
+
+[ EME ] ; NME residue, named this way to not cause confusion with capping
+  [ atoms ]
+           NL NH1    -0.42 0
+           CB CT2     0.06 1
+          HB1 HA2     0.09 2
+          HB2 HA2     0.09 3
+           CC CT2     0.03 4
+          HC1 HA2     0.09 5
+          HC2 HA2     0.09 6
+           OC OG301  -0.36 7
+           CD CT3    -0.15 8
+          HD1 HA3     0.09 9
+          HD2 HA3     0.09 10
+          HD3 HA3     0.09 11
+           CA CT2     0.03 12
+          HA1 HB2     0.09 13
+          HA2 HB2     0.09 14
+          CLP TC      0.51 15
+           OL O      -0.51 16
+
+  [ bonds ]
+       -CLP  NL
+        NL   CB
+        CB   HB1
+        CB   HB2
+        CB   CC
+        CC   HC1
+        CC   HC2
+        CC   OC
+        OC   CD
+        CD   HD1
+        CD   HD2
+        CD   HD3
+        NL   CA
+        CA   HA1
+        CA   HA2
+        CA   CLP
+        CLP  OL
+        CLP +NL
+
+  [ impropers ]
+        NL -CLP  CA CB
+        CLP  CA +NL OL
+
