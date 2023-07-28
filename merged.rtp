@@ -1111,6 +1111,9 @@
             CA  CLP
            CLP  OL
            CLP +NL
+	   CG1  HG1
+           CG2  HG2
+
   [ impropers ]
             NL    -CLP    CA    CB
             CLP    CA    +NL     OL
