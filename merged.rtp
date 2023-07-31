@@ -1204,6 +1204,7 @@
   [ impropers ]
         NL -CLP CA CB
         CLP CA +NL OL
+
 [ NCE ] ; Nglu or Nce residue (with a negative one charge)
   [ atoms ]
            NL NH1    -0.42 0
@@ -1244,6 +1245,7 @@
         NL -CLP CA CB
         CLP CA +NL OL
         CD  CC  OE1 OE2
+
 [ NCEn ] ; Nglu or Nce with a neutral charge (protonated)
   [ atoms ]
            NL NH1    -0.42 0
@@ -1286,6 +1288,7 @@
         NL -CLP CA CB
         CLP CA +NL OL
         CD  CC  OE1 OE2
+
 [ NAEk ] ; Nae with +1 charge
   [ atoms ]
            NL NH1    -0.420 0
@@ -1327,6 +1330,7 @@
   [ impropers ]
         NL -CLP CA CB
         CLP CA +NL OL
+
 [ NABk ] ; Nab with +1 charge
   [ atoms ]
            NL NH1    -0.420 0
@@ -1424,4 +1428,439 @@
   [ impropers ]
         NL -CLP  CA CB
         CLP  CA +NL OL
+
+; halogens
+; BTM (MIDDLE)
+;
+;           BRL
+;           |
+;           CH
+;          /   \
+;       CZ1     CZ2
+;         |  O  |
+;       CE1     CE2
+;          \   /
+;           CD
+;           |
+;           CG
+;           |
+;           CB          OL
+;           |           ||
+;      \ -- NL -- CA --CLP--\
+
+[ BTE ] ; Nbrpe updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CG    CT2    -0.12 4
+           HG1   HA2     0.09 5
+           HG2   HA2     0.09 6
+           CD    CG2R61  0.00 7
+           CE1   CG2R61 -0.12 8
+           HE1   HGR61   0.12 9
+           CE2   CG2R61 -0.12 10
+           HE2   HGR61   0.12 11
+           CZ1   CG2R61 -0.07 12
+           HZ1   HGR61   0.14 13
+           CZ2   CG2R61 -0.07 14
+           HZ2   HGR61   0.14 15
+           CH    CG2R61 -0.03 16
+           BRL   BRGR1  -0.10 17
+           CA    CT2     0.03 18
+           HA1   HB2     0.09 19
+           HA2   HB2     0.09 20
+           CLP   TC      0.51 21
+           OL    O      -0.51 22
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CG
+           CG   HG1
+           CG   HG2
+           CG   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   BRL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ CTE ] ; Nclpe updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CG    CT2    -0.12 4
+           HG1   HA2     0.09 5
+           HG2   HA2     0.09 6
+           CD    CG2R61  0.00 7
+           CE1   CG2R61 -0.12 8
+           HE1   HGR61   0.12 9
+           CE2   CG2R61 -0.12 10
+           HE2   HGR61   0.12 11
+           CZ1   CG2R61 -0.10 12
+           HZ1   HGR61   0.15 13
+           CZ2   CG2R61 -0.10 14
+           HZ2   HGR61   0.15 15
+           CH    CG2R61  0.06 16
+           CLL   CLGR1  -0.15 17
+           CA    CT2     0.03 18
+           HA1   HB2     0.09 19
+           HA2   HB2     0.09 20
+           CLP   TC      0.51 21
+           OL    O      -0.51 22
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CG
+           CG   HG1
+           CG   HG2
+           CG   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   CLL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ ITE ] ; Nipe updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CG    CT2    -0.12 4
+           HG1   HA2     0.09 5
+           HG2   HA2     0.09 6
+           CD    CG2R61  0.00 7
+           CE1   CG2R61 -0.12 8
+           HE1   HGR61   0.12 9
+           CE2   CG2R61 -0.12 10
+           HE2   HGR61   0.12 11
+           CZ1   CG2R61 -0.07 12
+           HZ1   HGR61   0.14 13
+           CZ2   CG2R61 -0.07 14
+           HZ2   HGR61   0.14 15
+           CH    CG2R61 -0.01 16
+           IRL   IGR1   -0.12 17
+           CA    CT2     0.03 18
+           HA1   HB2     0.09 19
+           HA2   HB2     0.09 20
+           CLP   TC      0.51 21
+           OL    O      -0.51 22
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CG
+           CG   HG1
+           CG   HG2
+           CG   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   IRL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ FTE ] ; Nfpe updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CG    CT2    -0.12 4
+           HG1   HA2     0.09 5
+           HG2   HA2     0.09 6
+           CD    CG2R61  0.00 7
+           CE1   CG2R61 -0.12 8
+           HE1   HGR61   0.12 9
+           CE2   CG2R61 -0.12 10
+           HE2   HGR61   0.12 11
+           CZ1   CG2R61 -0.07 12
+           HZ1   HGR61   0.15 13
+           CZ2   CG2R61 -0.07 14
+           HZ2   HGR61   0.15 15
+           CH    CG2R61  0.06 16
+           FRL   FGR1   -0.21 17
+           CA    CT2     0.03 18
+           HA1   HB2     0.09 19
+           HA2   HB2     0.09 20
+           CLP   TC      0.51 21
+           OL    O      -0.51 22
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CG
+           CG   HG1
+           CG   HG2
+           CG   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   FRL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ BTM ] ; Nbrpm updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CD    CG2R61  0.06 4
+           CE1   CG2R61 -0.12 5
+           HE1   HGR61   0.12 6
+           CE2   CG2R61 -0.12 7
+           HE2   HGR61   0.12 8
+           CZ1   CG2R61 -0.07 9
+           HZ1   HGR61   0.14 10
+           CZ2   CG2R61 -0.07 11
+           HZ2   HGR61   0.14 12
+           CH    CG2R61 -0.03 13
+           BRL   BRGR1  -0.10 14
+           CA    CT2     0.03 15
+           HA1   HB2     0.09 16
+           HA2   HB2     0.09 17
+           CLP   TC      0.51 18
+           OL    O      -0.51 19
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   BRL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ CTM ] ; Nclpm updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CD    CG2R61  0.06 4
+           CE1   CG2R61 -0.12 5
+           HE1   HGR61   0.12 6
+           CE2   CG2R61 -0.12 7
+           HE2   HGR61   0.12 8
+           CZ1   CG2R61 -0.09 9
+           HZ1   HGR61   0.14 10
+           CZ2   CG2R61 -0.09 11
+           HZ2   HGR61   0.14 12
+           CH    CG2R61  0.06 13
+           CLL   CLGR1  -0.15 14
+           CA    CT2     0.03 15
+           HA1   HB2     0.09 16
+           HA2   HB2     0.09 17
+           CLP   TC      0.51 18
+           OL    O      -0.51 19
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   CLL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ ITM ] ; Nipm updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CD    CG2R61  0.06 4
+           CE1   CG2R61 -0.12 5
+           HE1   HGR61   0.12 6
+           CE2   CG2R61 -0.12 7
+           HE2   HGR61   0.12 8
+           CZ1   CG2R61 -0.07 9
+           HZ1   HGR61   0.14 10
+           CZ2   CG2R61 -0.07 11
+           HZ2   HGR61   0.14 12
+           CH    CG2R61 -0.01 13
+           IRL   IGR1   -0.12 14
+           CA    CT2     0.03 15
+           HA1   HB2     0.09 16
+           HA2   HB2     0.09 17
+           CLP   TC      0.51 18
+           OL    O      -0.51 19
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   IRL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
+
+[ FTM ] ; Nfpm updated by KT from SA
+ [ atoms ]
+           NL    NH1    -0.42 0
+           CB    CT2    -0.04 1
+           HB1   HA2     0.09 2
+           HB2   HA2     0.09 3
+           CD    CG2R61  0.06 4
+           CE1   CG2R61 -0.12 5
+           HE1   HGR61   0.12 6
+           CE2   CG2R61 -0.12 7
+           HE2   HGR61   0.12 8
+           CZ1   CG2R61 -0.07 9
+           HZ1   HGR61   0.15 10
+           CZ2   CG2R61 -0.07 11
+           HZ2   HGR61   0.15 12
+           CH    CG2R61  0.06 13
+           FRL   FGR1   -0.21 14
+           CA    CT2     0.03 15
+           HA1   HB2     0.09 16
+           HA2   HB2     0.09 17
+           CLP   TC      0.51 18
+           OL    O      -0.51 19
+ [ bonds ]
+          -CLP  NL
+           NL   CB
+           CB   HB1
+           CB   HB2
+           CB   CD
+           CD   CE1
+           CE1  HE1
+           CD   CE2
+           CE2  HE2
+           CE1  CZ1
+           CZ1  HZ1
+           CE2  CZ2
+           CZ2  HZ2
+           CZ1  CH
+           CZ2  CH
+           CH   FRL
+           NL   CA
+           CA   HA1
+           CA   HA2
+           CA   CLP
+           CLP  OL
+           CLP +NL
+[ impropers ]
+           NL  -CLP  CA  CB
+           CLP  CA  +NL  OL
 

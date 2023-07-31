@@ -82,6 +82,9 @@
      CG2R61  CG2R61   CT2      CT2      9    180.000000    1.004160 2 ; for nbrpe
      BRGR1   CG2R61   CG2R61   HGR61    9    180.000000    12.55200 2 ; for nbrpe
      CLGR1   CG2R61   CG2R61   HGR61    9    180.000000    12.55200 2 ; for nclpe
+     FGR1    CG2R61   CG2R61   HGR61    9    180.000000    12.55200 2 ; for nfpe
+     CG2R61  CG2R61   CG2R61   FGR1     9    180.000000    12.55200 2 ; for nfpe
+     IGR1    CG2R61   CG2R61   HGR61    9    180.000000    12.55200 2 ; for nipe
      CG2R61  CG2R61   CT2      NH1      9          0.00    0.497896 2 ; for npm
      CG2R61  CG2R61   CT2      NH1      9         180.0    0.552288 4 ; for npm
      CG2R61  CG2R61   CT2      NH1      9         180.0    0.054392 6 ; for npm
