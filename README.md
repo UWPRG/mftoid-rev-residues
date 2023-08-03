@@ -33,7 +33,11 @@ Next, add the information contained here in the ffbonded directory to the ffbond
 
 Note: In bondtypes.itp/angletypes.itp/etc., you only need to add the lines with information about peptoids. I have included the header for each section and followed each section with "; Original CHARMM..." so you know where to place the information we've gathered.
 
-Lastly, add 'TC   12.01100 ; peptoid carbonyl carbon' to atomtypes.atp in your FF directory.
+Lastly, add 
+```
+TC   12.01100 ; peptoid carbonyl carbon
+```
+to atomtypes.atp in your FF directory.
 
 Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoid amino acid mimics and produce topologies using the updated CHARMM36 FF.
 
@@ -48,8 +52,9 @@ pip install -r requirements.txt
 
 Clone the repository locally or download the "structure_maker" directory. Then, using the command prompt, enter the structure_maker directory. Type the following command, and a structural file will be created for your use (the name of which is customizable): 
 
-**python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]**
-
+```
+python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]
+```
 Notes:
 1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B), histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J), as well as a tert-butyl side chain (code: 1) and a phenyl side chain (code: 2).
 2. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
