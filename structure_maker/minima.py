@@ -33,8 +33,8 @@ FILENAMES = {
     'V': 'VALp',
     '1': 'NTBp',
     '2': 'NPHp',
-    '3': 'BTMp',
-    '4': 'BTEp',
+    '3': 'BTM',
+    '4': 'BTE',
     '5': 'CTM',
     '6': 'CTE',
     '7': 'FTM',
@@ -44,7 +44,8 @@ FILENAMES = {
     'Z': 'NSPE',
     'X': 'NAEk',
     'O': 'NCEn',
-    '!': 'EME'
+    '!': 'EME',
+    '?': 'NOE'
 }
 
 
