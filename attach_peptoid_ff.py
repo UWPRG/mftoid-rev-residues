@@ -62,3 +62,7 @@ with open(os.path.join(cd, "ffbonded/dihedraltypes.itp"), "r") as f1:
 with open(os.path.join(cd, "ffbonded/improper.itp"), "r") as f1:
     with open(os.path.join(latest_dir, "ffbonded.itp"), "a+") as f2:
         f2.write(f1.read())
+with open(os.path.join(cd, "atomtypes.atp"), "r") as f1:
+    with open(os.path.join(latest_dir, "atomtypes.atp"), "a+") as f2:
+        f2.write(f1.read())
+

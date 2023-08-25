@@ -32,7 +32,19 @@ FILENAMES = {
     'Y': 'TYRp',
     'V': 'VALp',
     '1': 'NTBp',
-    '2': 'NPHp'
+    '2': 'NPHp',
+    '3': 'BTMp',
+    '4': 'BTEp',
+    '5': 'CTM',
+    '6': 'CTE',
+    '7': 'FTM',
+    '8': 'FTE',
+    '9': 'ITM',
+    '0': 'ITE',
+    'Z': 'NSPE',
+    'X': 'NAEk',
+    'O': 'NCEn',
+    '!': 'EME'
 }
 
 
@@ -75,7 +87,19 @@ NUM_ITERS = {
     'Y': 300,
     'V': 300,
     '1': 500,
-    '2': 300
+    '2': 300,
+    '3': 300,
+    '4': 300,
+    '5': 300,
+    '6': 300,
+    '7': 300,
+    '8': 300,
+    '9': 300,
+    '0': 300,
+    'Z': 300,
+    'X': 100,
+    'O': 100,
+    '!': 100
 }
 
 NTERM_POSITION = np.array([0.0264, -2.7761, 2.590])
@@ -115,7 +139,7 @@ def load_sequence(sequence, minimum, filename):
         
         # Read the structure PDB file
         filename2 = "noh_residue_pdb/" + FILENAMES[letter] + ".pdb"
-        print("Residue " + str(i) + ": " + FILENAMES[letter][:-1])
+        print("Residue " + str(i) + ": " + FILENAMES[letter])
         cur_index += 4
         if letter == "P":
             #load the proline file, superimpose proline's atoms on top of the backbone
@@ -340,7 +364,7 @@ def add_hydrogens(sequence, filename):
         #glycine and proline already have their sidechain hydrogens taken care of
         if letter != 'G' and letter != 'P':
             if letter.isupper():
-                fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not backbone"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
+                fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not name N and not name C and not name CA and not name O"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
             else:
                 fixed_indices = np.concatenate((new_mtop.select("resid " + str(j) + " and not name C and not name CA and not name N and not name O"), new_mtop.select("resid " + str(j) + " and name N"))).astype(np.int64)
             fixed_coords = molecule.xyz[0, fixed_indices] 
@@ -380,10 +404,8 @@ def add_hydrogens(sequence, filename):
             molecule.xyz = np.array([temp])
        
         #similarly to previoius actions, add the alpha-hydrogens to the backbone.
-        if letter.isupper():
-            fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and backbone and not name O")
-        else:
-            fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and name N or resid " + str(j) + " and name CA or resid " + str(j) + " and name C")
+        fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and name N or resid " + str(j) + " and name CA or resid " + str(j) + " and name C")
+        print(fixed_backbone_indices)
         fixed_backbone = molecule.xyz[0, fixed_backbone_indices]
         moving_backbone_indices = htop.select("name NL or name CA or name CLP")        
         
