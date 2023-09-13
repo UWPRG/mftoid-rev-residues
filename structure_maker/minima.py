@@ -44,7 +44,7 @@ FILENAMES = {
     'Z': 'NSPE',
     'X': 'NAEk',
     'O': 'NCEn',
-    '!': 'EME',
+    '@': 'EME',
     '?': 'NOE'
 }
 
@@ -100,7 +100,8 @@ NUM_ITERS = {
     'Z': 300,
     'X': 100,
     'O': 100,
-    '!': 100
+    '@': 100,
+    '?': 100
 }
 
 NTERM_POSITION = np.array([0.0264, -2.7761, 2.590])
@@ -406,7 +407,6 @@ def add_hydrogens(sequence, filename):
        
         #similarly to previoius actions, add the alpha-hydrogens to the backbone.
         fixed_backbone_indices = new_mtop.select("resid " + str(j) + " and name N or resid " + str(j) + " and name CA or resid " + str(j) + " and name C")
-        print(fixed_backbone_indices)
         fixed_backbone = molecule.xyz[0, fixed_backbone_indices]
         moving_backbone_indices = htop.select("name NL or name CA or name CLP")        
         
