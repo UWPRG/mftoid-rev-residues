@@ -61,7 +61,8 @@ MINIMA_FILENAMES = {
     'A+T': 'alpha_plus_trans',
     'A-T': 'alpha_minus_trans',
     'A+C': 'alpha_plus_cis',
-    'A-C': 'alpha_minus_cis'
+    'A-C': 'alpha_minus_cis',
+    'HELIX': 'gly_backbone'
 }
 
 NUM_ITERS = {
@@ -481,7 +482,6 @@ def attach_ace_nme(minimum, filename):
     nme.xyz[0] += c_translate
     c_bond = mol_cterm - molecule.xyz[0, molecule.topology.select("resid " + str(nres - 1) + " and name C")[0]]
     i = nres + 1
-
     for cap, idx, bond in zip((ace, nme), (0, nres), (n_bond, c_bond)):
         first = np.copy(cap.xyz[0, 0])
         cap.xyz[0] -= first
@@ -544,9 +544,9 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                 str2 = "p    "
                 nres = len(sequence)
                 if nres > 10:
-                    str3 = str(nres + 1) + "  "
+                    str3 = str(nres + 1) + " "
                 else:
-                    str3 = str(nres + 1) + "   "
+                    str3 = str(nres + 1) + "  "
                 if line[13:19] == "C   NM":
                     str1 = "CAT"
                 elif line[13:15] == "H ":
@@ -565,9 +565,9 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                     l = line[:6] + str0 + str1 + line[16:20] + str2 + str3 + line[29:]
 
             elif line.startswith("ATOM"):
-                num_str = line[25:27]
+                num_str = line[24:26]
                 cur_resnum = int(num_str)
-                cur_residue = " " + FILENAMES[sequence[cur_resnum - 1]] + "    "
+                cur_residue = " " + FILENAMES[sequence[cur_resnum - 1]] + "   "
                 numlen = len(str(atom_number))
                 str0 = " " * (5 - numlen) + str(atom_number) + " "
                 atom_number += 1
@@ -584,7 +584,7 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                     str1 = " HA1"         
                 else:
                     str1 = line[12:16]
-                l = line[:6] + str0 + str1 + cur_residue + line[25:]
+                l = line[:6] + str0 + str1 + cur_residue + line[24:]
             f.write(l)
     print("Done!")
 def create_peptoid(sequence, minimum="alphaD_plus_trans", filename="molecule.pdb"):
@@ -593,6 +593,8 @@ def create_peptoid(sequence, minimum="alphaD_plus_trans", filename="molecule.pdb
     add_hydrogens(sequence, filename)
     attach_ace_nme(minimum, filename)
     pdb_to_peptoid_forcefield(sequence, filename)
+    if not filename.endswith('.pdb'):
+        filename = filename + '.pdb'
     return md.load(filename, standard_names=False)
     
 def run():
