@@ -541,12 +541,12 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                 numlen = len(str(atom_number))
                 str0 = " " * (5 - numlen) + str(atom_number) + "  "
                 atom_number += 1
-                str2 = "p    "
+                str2 = "p   "
                 nres = len(sequence)
                 if nres > 10:
-                    str3 = str(nres + 1) + " "
+                    str3 = str(nres + 1) + "   "
                 else:
-                    str3 = str(nres + 1) + "  "
+                    str3 = str(nres + 1) + "    "
                 if line[13:19] == "C   NM":
                     str1 = "CAT"
                 elif line[13:15] == "H ":
