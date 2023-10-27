@@ -159,9 +159,9 @@ def load_sequence(sequence, minimum, filename):
             #put proline ring indices where they belong
             orientation.xyz[0, pro_sidechain_indices] = np.dot(orientation.xyz[0, pro_sidechain_indices], rot) + tran
             structure = md.load("noh_residue_pdb/PROd.pdb", standard_names=False)
+            sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
             cur_index += structure.topology.n_atoms
 
-            sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
             structure.xyz[0] = orientation.xyz[0, [4,7,8]]
 
             #Adjust length of CA-CB bond
@@ -182,7 +182,6 @@ def load_sequence(sequence, minimum, filename):
             table.loc[table['resSeq'] == i, 'resName'] = resname
             table.loc[:, 'serial'] = np.arange(len(table)) + 1
             top = md.Topology.from_dataframe(table, bonds)
-
             #Adjust atom indices via MDTraj's dataframe capabilities
             t2, b2 = top.to_dataframe()
             proper_indices = t2['serial'].to_numpy() - 1
@@ -198,7 +197,6 @@ def load_sequence(sequence, minimum, filename):
             top.add_bond(atoms[np.where(proper_indices == bond_n)[0][0]], atoms[np.where(proper_indices == bond_r)[0][0]])
             top.add_bond(atoms[np.where(proper_indices == bond_ca)[0][0]], atoms[np.where(proper_indices == bond_c)[0][0]])
             backbone.topology = top
-
         else:
             structure = md.load(filename2, standard_names=False)
             sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
@@ -237,6 +235,7 @@ def load_sequence(sequence, minimum, filename):
             top = md.Topology.from_dataframe(table, bonds)
             t2, b2 = top.to_dataframe()
             proper_indices = t2['serial'].to_numpy() - 1
+
             backbone = md.Trajectory(backbone.xyz[0, proper_indices], top)
 
             #Add bonds to topology
@@ -249,6 +248,8 @@ def load_sequence(sequence, minimum, filename):
             backbone.topology = top        
 
         i += 1
+    t2, b2 = backbone.topology.to_dataframe()
+    backbone.topology = md.Topology.from_dataframe(t2, b2)
     print("Saving Initial File PDB before energy minimization: " + filename)
     backbone.save_pdb(filename)
 
@@ -336,7 +337,6 @@ def minimize_energy(sequence, minimum, filename):
         if k > 0 and not k % 100:
             print("Monte Carlo Round " + str(k))
         for j, letter in enumerate(sequence):
-            
             if minimum == 'A-T' or minimum == 'A+T':
                 if k < 3 * NUM_ITERS[letter]:
                     perturb_angle(molecule, j)
