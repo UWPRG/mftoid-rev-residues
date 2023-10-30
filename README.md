@@ -44,10 +44,11 @@ Once these updates have been made, you should be able to use the peptoid residue
 
 ### STRUCTURE MAKER USAGE INSTRUCTIONS
 
-The structure maker creates a "pdb" file of a peptoid with a natural amino acid sequence in a desired minimum configuration. It makes use of Numpy, MDTraj 1.9.4, and Bio.PDB (biopython 1.79). To install these, you may use 
+The structure maker creates a "pdb" file of a peptoid with a natural amino acid sequence in a desired minimum configuration. It makes use of Numpy, MDTraj 1.9.4, and Bio.PDB (biopython 1.79), which have dependencies on other environments. To ensure the success of this structure maker, you may create and activate the conda environment for this project the following way:
 
 ```
-pip install -r requirements.txt
+conda env create -f environment.yml
+conda activate normal
 ```
 
 Clone the repository locally or download the "structure_maker" directory. Then, using the command prompt, enter the structure_maker directory. Type the following command, and a structural file will be created for your use (the name of which is customizable): 
