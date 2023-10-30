@@ -71,7 +71,9 @@ Notes:
    	C7B-C: C7-beta minus, cis
 	C7B+T: C7-beta plus, trans
    	C7B+C: C7-beta plus, cis
-   Please note not every amino acid sequence has a valid structure in any given minimum (proline, for example, may cause serious problems): be sure to use a valid minimum for your sequence.
-3. FILENAME: any filename is valid; however, if the filename does not end with ".pdb", that extension will be added automatically.
+
+
+Please note not every amino acid sequence has a valid structure in any given minimum (proline, for example, may cause serious problems): be sure to use a valid minimum for your sequence.
+4. FILENAME: any filename is valid; however, if the filename does not end with ".pdb", that extension will be added automatically.
 
 You may then use [FILENAME].pdb in your future simulations.
