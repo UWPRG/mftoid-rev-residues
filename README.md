@@ -59,10 +59,10 @@ python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]
 Notes:
 1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist, and their codes follow:
     	B: positively charge histidine  
-        J: histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen
-   	O: carboxyethyl (Nce) side chain, negatively charged
-   	X: aminoethyl (Nae) side chain, positively charged
-   	Z: S-1-phenylethyl (Nspe) side chain
+        J: histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen  
+   	O: carboxyethyl (Nce) side chain, negatively charged  
+   	X: aminoethyl (Nae) side chain, positively charged  
+   	Z: S-1-phenylethyl (Nspe) side chain  
    	1: tert-butyl side chain  
         2: phenyl side chain  
    	3: p-bromophenyl-methyl side chain (Nbrpm)  
