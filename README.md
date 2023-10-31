@@ -57,7 +57,7 @@ Clone the repository locally or download the "structure_maker" directory. Then, 
 python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]
 ```
 Notes:
-1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist, and their codes follow:
+1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist, and their codes follow:  
     	B: positively charge histidine  
         J: histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen  
    	O: carboxyethyl (Nce) side chain, negatively charged  
