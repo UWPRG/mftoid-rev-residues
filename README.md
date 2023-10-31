@@ -65,16 +65,16 @@ Notes:
    	Z: S-1-phenylethyl (Nspe) side chain
    	1: tert-butyl side chain  
         2: phenyl side chain  
-   	3: p-bromophenyl-methyl side chain (Nbrpm)
-   	4: p-bromophenyl-ethyl side chain (Nbrpe)
-  	5: p-chlorophenyl-methyl side chain (Nclpm)
-   	6: p-chlorophenyl-ethyl side chain (Nclpe)
-   	7: p-fluorophenyl-methyl side chain (Nfpm)
-   	8: p-fluorophenyl-ethyl side chain (Nfpe)
-   	9: p-iodophenyl-methyl side chain (Nipm)
-   	0: p-iodophenyl-ethyl side chain (Nipe)
-   	@: 1-methoxyethyl side chain
-   	?: 1-hydroxyethyl sidechain
+   	3: p-bromophenyl-methyl side chain (Nbrpm)  
+   	4: p-bromophenyl-ethyl side chain (Nbrpe)  
+  	5: p-chlorophenyl-methyl side chain (Nclpm)  
+   	6: p-chlorophenyl-ethyl side chain (Nclpe)  
+   	7: p-fluorophenyl-methyl side chain (Nfpm)  
+   	8: p-fluorophenyl-ethyl side chain (Nfpe)  
+   	9: p-iodophenyl-methyl side chain (Nipm)  
+   	0: p-iodophenyl-ethyl side chain (Nipe)  
+   	@: 1-methoxyethyl side chain  
+   	?: 1-hydroxyethyl sidechain  
 3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
   	A-T: alpha minus, trans  
    	A-C: alpha minus, cis  
