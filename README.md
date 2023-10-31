@@ -59,18 +59,18 @@ python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]
 Notes:
 1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B), histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J), as well as a tert-butyl side chain (code: 1) and a phenyl side chain (code: 2).
 2. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
-  	A-T: alpha minus, trans
-   	A-C: alpha minus, cis
-   	A+T: alpha plus, trans
-   	A+C: alpha plus, cis
-    	AD-T: alpha-D minus, trans
-   	AD-C: alpha-D minus, cis
-	AD+T: alpha-D plus, trans
-   	AD+C: alpha-D plus, cis
-   	C7B-T: C7-beta minus, trans
-   	C7B-C: C7-beta minus, cis
-	C7B+T: C7-beta plus, trans
-   	C7B+C: C7-beta plus, cis
+  	A-T: alpha minus, trans  
+   	A-C: alpha minus, cis  
+   	A+T: alpha plus, trans  
+   	A+C: alpha plus, cis  
+    	AD-T: alpha-D minus, trans  
+   	AD-C: alpha-D minus, cis  
+	AD+T: alpha-D plus, trans  
+   	AD+C: alpha-D plus, cis  
+   	C7B-T: C7-beta minus, trans  
+   	C7B-C: C7-beta minus, cis  
+	C7B+T: C7-beta plus, trans  
+   	C7B+C: C7-beta plus, cis  
 
 
 Please note not every amino acid sequence has a valid structure in any given minimum (proline, for example, may cause serious problems): be sure to use a valid minimum for your sequence.
