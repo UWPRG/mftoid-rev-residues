@@ -57,8 +57,25 @@ Clone the repository locally or download the "structure_maker" directory. Then, 
 python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]
 ```
 Notes:
-1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist for a positively charge histidine (code: B), histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen (code: J), as well as a tert-butyl side chain (code: 1) and a phenyl side chain (code: 2).
-2. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
+1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist, and their codes follow:
+    	B: positively charge histidine  
+        J: histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen
+   	O: carboxyethyl (Nce) side chain, negatively charged
+   	X: aminoethyl (Nae) side chain, positively charged
+   	Z: S-1-phenylethyl (Nspe) side chain
+   	1: tert-butyl side chain  
+        2: phenyl side chain  
+   	3: p-bromophenyl-methyl side chain (Nbrpm)
+   	4: p-bromophenyl-ethyl side chain (Nbrpe)
+  	5: p-chlorophenyl-methyl side chain (Nclpm)
+   	6: p-chlorophenyl-ethyl side chain (Nclpe)
+   	7: p-fluorophenyl-methyl side chain (Nfpm)
+   	8: p-fluorophenyl-ethyl side chain (Nfpe)
+   	9: p-iodophenyl-methyl side chain (Nipm)
+   	0: p-iodophenyl-ethyl side chain (Nipe)
+   	@: 1-methoxyethyl side chain
+   	?: 1-hydroxyethyl sidechain
+3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
   	A-T: alpha minus, trans  
    	A-C: alpha minus, cis  
    	A+T: alpha plus, trans  
