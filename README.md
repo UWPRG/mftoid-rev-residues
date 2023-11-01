@@ -7,12 +7,15 @@
 ## REPOSITORY CONTENTS
 	
 1. merged.rtp: file containing atoms, bonds, atomtypes, and charges for each peptoid amino acid mimic
-
-2. ffbonded: directory containing 4 files (bondtypes.itp contains updated bond types, angletypes.itp angle types, dihedraltypes.itp proper dihedral types, and improper.itp the improper dihedral types)
-
+2. atomtypes.atp: file containing the new atomtypes needed for the augmented force field
 3. ffnonbonded.itp: file containing the carbonyl carbon peptoid parameter from Mirijanian's MFTOID
-
-4. residue_pdb: a directory containing PDBs of each of the peptoid versions of the amino acids, orderedand labeled according to updated forcefield residues found in merged.rtp
+4. ffbonded: directory containing 4 files (bondtypes.itp contains updated bond types, angletypes.itp angle types, dihedraltypes.itp proper dihedral types, and improper.itp the improper dihedral types)
+5. residue_pdb: a directory containing PDBs of each of the peptoid versions of the amino acids, orderedand labeled according to updated forcefield residues found in merged.rtp
+6. structure_maker: a directory used to generate structures for your simulated peptoids
+7. simulation_template: a directory of files used to run MD simulations.
+8. simulations: a directory in which your simulations will be stored if you choose to run our simulation scripts.
+9. run_sim.sh: a script you can use to generate peptoid structures from sequence and run MD simulations in water.
+10. environment.yml: an Anaconda environment you should use to run our scripts.
 
 ## INSTRUCTIONS
 
@@ -34,19 +37,19 @@ python attach_peptoid_ff.py
 
 Otherwise, you may update your force field files manually:
 
-Next, add the peptoid parameter TC found here in ffnonbonded.itp into the ffnonbonded.itp doc in your CHARMM36 FF file.
+1. Add the peptoid parameter TC found here in ffnonbonded.itp into the ffnonbonded.itp doc in your CHARMM36 FF file.
 
-Next, add the information contained here in the ffbonded directory to the ffbonded.itp doc in your CHARMM36 FF file. There are 4 main sections of the ffbonded.itp file; add bondtypes.itp to the [bondtypes] section, angletypes.itp to the [angletypes] section, dihedraltypes.itp to the first [dihedraltypes] section, and improper.itp to the second [dihedraltypes] section (it should mention impropers).
+2. Add the information contained here in the ffbonded directory to the ffbonded.itp doc in your CHARMM36 FF file. There are 4 main sections of the ffbonded.itp file; add bondtypes.itp to the [bondtypes] section, angletypes.itp to the [angletypes] section, dihedraltypes.itp to the first [dihedraltypes] section, and improper.itp to the second [dihedraltypes] section (it should mention impropers).
 
 Note: In bondtypes.itp/angletypes.itp/etc., you only need to add the lines with information about peptoids. I have included the header for each section and followed each section with "; Original CHARMM..." so you know where to place the information we've gathered.
 
-Lastly, add 
+3. Lastly, add 
 ```
 TC   12.01100 ; peptoid carbonyl carbon
 ```
 to atomtypes.atp in your FF directory.
 
-Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoid amino acid mimics and produce topologies using the updated CHARMM36 FF.
+Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoids and produce topologies using the updated CHARMM36 FF.
 
 ### Using the Structure Generator
 
