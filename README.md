@@ -98,7 +98,7 @@ Please note not every amino acid sequence has a valid structure in any given min
 You may then use [FILENAME].pdb in your future simulations.
 
 ### Running Automated Simulation Scripts
-We currently have simulation scripts set up to run 500 ns parallel bias metadynamics simulations in SPC/E water, biasing on all the backbone dihedral angles, radius of gyration, and alphabetas (distances) from the 12 common dihedral angle free energy minima. To run a simulation, use the following bash command.
+We currently have simulation scripts set up to run 500 ns parallel bias metadynamics simulations in SPC/E water, biasing on all the backbone dihedral angles, radius of gyration, and alphabetas (distances) from the 12 common dihedral angle free energy minima. **These scripts generate the structure for you, so you do not have to run the structure maker code before running the simulation.** To run a simulation, use the following bash command. 
 ```
 bash run_sim.sh [SEQUENCE] [MINIMUM CODE]
 ```
