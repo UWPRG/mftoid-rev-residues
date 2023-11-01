@@ -24,18 +24,14 @@ conda env create -f environment.yml
 conda activate normal
 ```
 
+### Setting up the augmented CHARMM36 Force Field
 
-### Downloading the augmented CHARMM36 Force Field
-
-Download the CHARMM36 forcefield from the MacKerell Lab website: https://mackerell.umaryland.edu/charmm_ff.shtml#gromacs:~:text=charmm36%2Dfeb2021.ff.tgz. We highly recommend you use the February 2021 version of CHARMM36 to be compatible with our parameters and scripts into this Github. After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36 force field. Additionally, ensure you have Python3 installed. Then, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
-
-To update the downloaded version of your CHARMM FF for peptoid amino acid mimic capabilities, start by copying the information found in this Github repository in the merged.rtp file directly into the merged.rtp doc in your CHARMM36 FF file.
-
-
+Download the CHARMM36 forcefield from the [MacKerell Lab website](https://mackerell.umaryland.edu/charmm_ff.shtml#gromacs:~:text=charmm36%2Dfeb2021.ff.tgz). We highly recommend you use the February 2021 version of CHARMM36 to be compatible with our parameters and scripts into this Github. After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36-Feb2021 force field. Additionally, ensure you have Python3 installed. Then, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
 
 ```
 python attach_peptoid_ff.py
 ```
+
 Otherwise, you may update your force field files manually:
 
 Next, add the peptoid parameter TC found here in ffnonbonded.itp into the ffnonbonded.itp doc in your CHARMM36 FF file.
@@ -52,17 +48,9 @@ to atomtypes.atp in your FF directory.
 
 Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoid amino acid mimics and produce topologies using the updated CHARMM36 FF.
 
+### Using the Structure Generator
 
-### STRUCTURE MAKER USAGE INSTRUCTIONS
-
-The structure maker creates a "pdb" file of a peptoid with a natural amino acid sequence in a desired minimum configuration. It makes use of Numpy, MDTraj 1.9.4, and Bio.PDB (biopython 1.79), which have dependencies on other environments. To ensure the success of this structure maker, you may create and activate the conda environment for this project the following way:
-
-```
-conda env create -f environment.yml
-conda activate normal
-```
-
-Clone the repository locally or download the "structure_maker" directory. Then, using the command prompt, enter the structure_maker directory. Type the following command, and a structural file will be created for your use (the name of which is customizable): 
+Using the command prompt, enter the structure_maker directory. Type the following command, and a structural file will be created for your use (the name of which is customizable): 
 
 ```
 python minima.py --seq [SEQUENCE] --mini [MINIMUM CODE] --file [FILENAME]
@@ -105,3 +93,6 @@ Please note not every amino acid sequence has a valid structure in any given min
 4. FILENAME: any filename is valid; however, if the filename does not end with ".pdb", that extension will be added automatically.
 
 You may then use [FILENAME].pdb in your future simulations.
+
+### Running Automated Simulation Scripts
+
