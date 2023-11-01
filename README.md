@@ -29,7 +29,7 @@ conda activate normal
 
 ### Setting up the augmented CHARMM36 Force Field
 
-Download the CHARMM36 forcefield from the [MacKerell Lab website](https://mackerell.umaryland.edu/charmm_ff.shtml#gromacs:~:text=charmm36%2Dfeb2021.ff.tgz). We highly recommend you use the February 2021 version of CHARMM36 to be compatible with our parameters and scripts into this Github. After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36-Feb2021 force field. Additionally, ensure you have Python3 installed. Then, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
+Download the CHARMM36 forcefield from the [MacKerell Lab website](https://mackerell.umaryland.edu/charmm_ff.shtml#gromacs:~:text=charmm36%2Dfeb2021.ff.tgz). We highly recommend you use the February 2021 version of CHARMM36 to be compatible with our parameters and scripts into this Github. After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36-Feb2021 force field. Additionally, ensure you have Python3 installed. Second, ensure you have write permissions to the CHARMM36-Feb2021 force field files. Finally, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
 
 ```
 python attach_peptoid_ff.py
@@ -98,4 +98,9 @@ Please note not every amino acid sequence has a valid structure in any given min
 You may then use [FILENAME].pdb in your future simulations.
 
 ### Running Automated Simulation Scripts
-
+We currently have simulation scripts set up to run 500 ns parallel bias metadynamics simulations in SPC/E water, biasing on all the backbone dihedral angles, radius of gyration, and alphabetas (distances) from the 12 common dihedral angle free energy minima. To run a simulation, use the following bash command.
+```
+bash run_sim.sh [SEQUENCE] [MINIMUM CODE]
+```
+For practicality and speed concerns, we recommend you create an additional script to wrap this code so you may run it on a GPU or multiple parallel CPUs.   
+To adjust conditions of your simulations, view the files in the ```simulation_template``` directory. Specifically, ```simulation_template/mini_sim.sh``` will be useful to modify for the number of molecules or the dimension of your box. The specific MD parameter files (.mdp) for your simulations are located in `2_em`, `3_md`, and `4_pb` in the `simulation_template` directory.
