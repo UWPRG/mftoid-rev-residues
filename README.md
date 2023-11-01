@@ -4,7 +4,7 @@
 
 ## GOAL: Build library of residues based on the Weiser+Santiso modified MFTOID force field peptoid backbone
 
-### REPOSITORY CONTENTS
+## REPOSITORY CONTENTS
 	
 1. merged.rtp: file containing atoms, bonds, atomtypes, and charges for each peptoid amino acid mimic
 
@@ -14,13 +14,24 @@
 
 4. residue_pdb: a directory containing PDBs of each of the peptoid versions of the amino acids, orderedand labeled according to updated forcefield residues found in merged.rtp
 
-### INSTRUCTIONS
+## INSTRUCTIONS
 
-Download the CHARMM36 forcefield from the MacKerell Lab website; there have been some updates between February 2021 and July 2022 on forcefield file structure. We have been using the February 2021 version of the FF (and older) so we will most closely match that directory structure.
+### Packages and Dependencies
+
+The code in this package and in our scripts requires a set of dependencies. You can use our conda environment to have all of them properly installed. Once your github is cloned, this is done as follows: 
+```
+conda env create -f environment.yml
+conda activate normal
+```
+
+
+### Downloading the augmented CHARMM36 Force Field
+
+Download the CHARMM36 forcefield from the MacKerell Lab website: https://mackerell.umaryland.edu/charmm_ff.shtml#gromacs:~:text=charmm36%2Dfeb2021.ff.tgz. We highly recommend you use the February 2021 version of CHARMM36 to be compatible with our parameters and scripts into this Github. After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36 force field. Additionally, ensure you have Python3 installed. Then, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
 
 To update the downloaded version of your CHARMM FF for peptoid amino acid mimic capabilities, start by copying the information found in this Github repository in the merged.rtp file directly into the merged.rtp doc in your CHARMM36 FF file.
 
-After downloading your CHARMM36 FF, the new parameters manually (as explained below) or automatically in the following way. First, ensure your GMXLIB environment variable is the directory that contains your CHARMM36 force field. Additionally, ensure you have Python3 installed. Then, enter the MFToid-Rev-Residues directory containing the contents of this github, and enter the following command: 
+
 
 ```
 python attach_peptoid_ff.py
