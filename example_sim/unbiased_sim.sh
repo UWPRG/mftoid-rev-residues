@@ -99,7 +99,7 @@ cp 2_em/npt.gro 3_md
 cp 2_em/npt.cpt 3_md
 cp 2_em/topol.top 3_md
 
-cd 3_md
+cd ../3_md
 
 sed -i "s/MOLNAME/$NAME/g" md.mdp
 

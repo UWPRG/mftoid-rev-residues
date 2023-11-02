@@ -73,14 +73,24 @@ cp 2_em/topol.top 4_pb
 cp 2_em/npt.gro 4_pb
 cp 2_em/npt.cpt 4_pb
 
-cd 4_pb
+cd 3_md
+
+sed -i "s/MOLNAME/$NAME/g" md.mdp
+
+gmx_mpi grompp -f mdout_peptoid.mdp -c npt.gro -t npt.cpt -p topol.top -o md.tpr -maxwarn 2
+
+gmx_mpi mdrun -ntomp $OMP_NUM_THREADS -v -deffnm md
+echo 1 | gmx_gpu trjconv -f md.xtc -o md_whole.xtc -s md.tpr -pbc whole
+echo 1 | gmx_gpu trjconv -f npt.gro -o npt_whole.gro -s md.tpr -pbc whole
+gmx_mpi editconf -f npt_whole.gro -o npt_whole.pdb
+cd ../4_pb
 gmx_mpi editconf -f npt.gro -o npt.pdb
 python remove_solvent.py
 python gen_plumed.py
 gmx_mpi grompp -f mdout_peptoid.mdp -c npt.gro -o npt.tpr -maxwarn 2
-gmx_mpi mdrun -ntomp $OMP_NUM_THREADS --deffnm npt -nice 0 -cpi npt.cpt -plumed plumed_meta.dat
-echo 1 | gmx_mpi trjconv -f npt.xtc -o npt_whole.xtc -s md.tpr -pbc whole
-echo 1 | gmx_mpi trjconv -f npt.gro -o npt_whole.gro -s md.tpr -pbc whole
+gmx_mpi mdrun -ntomp $OMP_NUM_THREADS --deffnm npt -nice 0 -plumed plumed_meta.dat
+echo 1 | gmx_mpi trjconv -f npt.xtc -o npt_whole.xtc -s npt.tpr -pbc whole
+echo 1 | gmx_mpi trjconv -f npt.gro -o npt_whole.gro -s npt.tpr -pbc whole
 gmx_mpi editconf -f npt_whole.gro -o npt_whole.pdb
 rm -f colvar_reweight.dat
 bash reweight.sh
