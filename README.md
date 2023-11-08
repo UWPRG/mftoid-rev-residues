@@ -24,7 +24,7 @@
 The code in this package and in our scripts requires a set of dependencies. You can use our conda environment to have all of them properly installed. Once your github is cloned, this is done as follows: 
 ```
 conda env create -f environment.yml
-conda activate normal
+conda activate peptoid_env
 ```
 
 ### Setting up the augmented CHARMM36 Force Field

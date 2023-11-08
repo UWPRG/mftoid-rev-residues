@@ -1,4 +1,4 @@
-name: normal
+name: peptoid_env
 channels:
   - pytorch
   - anaconda
@@ -310,8 +310,6 @@ dependencies:
   - zlib=1.2.11=h7b6447c_3
   - zstd=1.4.9=haebb681_0
   - pip:
-    - amberlite==16.0
-    - ambertools==17.0
     - bel-resources==0.0.3
     - bhmm==0.6.3
     - bioregistry==0.6.45
@@ -412,4 +410,3 @@ dependencies:
     - wheel==0.37.0
     - widgetsnbextension==3.6.5
     - yapf==0.30.0
-prefix: /project2/andrewferguson/berlaga/conda_env/envs/normal
