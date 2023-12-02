@@ -265,7 +265,7 @@ def load_sequence(sequence, minimum, filename):
     print("Removed unnecessary bond information: " + filename)
    
 
-def perturb_angle(molecule, residue_num, sigma=0.01):
+def perturb_angle(molecule, residue_num, sigma=0.001):
     #helper function for randomly adjusting a peptoid side chain angle 
     #(cannot simply use chi because it emerges from the nitrogen)
     

@@ -78,7 +78,7 @@ gmx_mpi editconf -f npt.gro -o npt.pdb
 python remove_solvent.py
 python gen_plumed.py
 gmx_mpi grompp -f mdout_peptoid.mdp -c npt.gro -o npt.tpr -maxwarn 2
-gmx_mpi mdrun -ntomp $OMP_NUM_THREADS --deffnm npt -nice 0 -cpi npt.cpt -plumed plumed_meta.dat
+gmx_mpi mdrun -ntomp $OMP_NUM_THREADS --deffnm npt -nice 0 -plumed plumed_meta.dat
 echo 1 | gmx_mpi trjconv -f npt.xtc -o npt_whole.xtc -s md.tpr -pbc whole
 echo 1 | gmx_mpi trjconv -f npt.gro -o npt_whole.gro -s md.tpr -pbc whole
 gmx_mpi editconf -f npt_whole.gro -o npt_whole.pdb
