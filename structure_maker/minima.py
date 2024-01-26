@@ -294,9 +294,10 @@ def perturb_angle(molecule, residue_num, sigma=0.001):
     new_energy = energy_function(calculate_min_dist(molecule, residue_num))
     if new_energy > cur_energy:
         prob = np.exp(-50 * (new_energy - cur_energy))
-        if np.random.uniform() > prob:
+        if np.random.uniform() < prob:
             molecule.xyz = xyz_copy
-    
+    else:
+        molecule.xyz = xyz_copy
 def calculate_min_dist(molecule, residue_num):
     #helper function to calculate the smallest distance between two non-hydrogen atoms from one residue to every other residue
     
@@ -304,7 +305,6 @@ def calculate_min_dist(molecule, residue_num):
     residue_xyz = molecule.xyz[0, sidechain_indices[residue_num]]
     residue_n = molecule.xyz[0, backbone_indices[residue_num][0]]
     residue_ca = molecule.xyz[0, backbone_indices[residue_num][1]]
-
     for i, res in enumerate(molecule.top.residues):
         if 'GLY' not in res.name and i != residue_num:
             res_list.append(i)
@@ -333,6 +333,7 @@ def minimize_energy(sequence, minimum, filename):
     #Run a sufficient number of Monte-Carlo steps until the residues are far enough apart from each other to allow a simulation to run.
     print("Minimizing Energy....")
     molecule = md.load(filename, standard_names=False)
+
     for k in range(900):
         if k > 0 and not k % 100:
             print("Monte Carlo Round " + str(k))
