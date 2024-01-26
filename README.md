@@ -104,3 +104,8 @@ bash run_sim.sh [SEQUENCE] [MINIMUM CODE]
 ```
 For practicality and speed concerns, we recommend you create an additional script to wrap this code so you may run it on a GPU or multiple parallel CPUs.   
 To adjust conditions of your simulations, view the files in the ```simulation_template``` directory. Specifically, ```simulation_template/mini_sim.sh``` will be useful to modify for the number of molecules or the dimension of your box. The specific MD parameter files (.mdp) for your simulations are located in `2_em`, `3_md`, and `4_pb` in the `simulation_template` directory.
+
+### Testing the High Throughput Simulation Package
+
+To test the functionality of this simulation package, you may run the following bash command: ```bash test_example.sh```
+This should run a simulation of disarcosine in water. After energy minimization and NVT and NPT equilibration, it will run for 5 picoseconds. It will create a folder called ```test_sim``` and the filenames inside that folder should be the same as the comparison folder ```test_sim_comp```. If you have any issues, please open an issue in this repository.
