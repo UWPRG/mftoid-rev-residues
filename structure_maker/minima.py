@@ -544,7 +544,7 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                 atom_number += 1
                 str2 = "p   "
                 nres = len(sequence)
-                if nres > 10:
+                if nres > 8:
                     str3 = str(nres + 1) + "   "
                 else:
                     str3 = str(nres + 1) + "    "
