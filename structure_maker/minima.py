@@ -294,10 +294,9 @@ def perturb_angle(molecule, residue_num, sigma=0.001):
     new_energy = energy_function(calculate_min_dist(molecule, residue_num))
     if new_energy > cur_energy:
         prob = np.exp(-50 * (new_energy - cur_energy))
-        if np.random.uniform() < prob:
+        if np.random.uniform() > prob:
             molecule.xyz = xyz_copy
-    else:
-        molecule.xyz = xyz_copy
+    
 def calculate_min_dist(molecule, residue_num):
     #helper function to calculate the smallest distance between two non-hydrogen atoms from one residue to every other residue
     
