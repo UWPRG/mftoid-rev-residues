@@ -162,7 +162,7 @@ def load_sequence(sequence, minimum, filename):
             sidechain_indices.append(np.arange(structure.topology.n_atoms) + cur_index)
             cur_index += structure.topology.n_atoms
 
-            structure.xyz[0] = orientation.xyz[0, [4,7,8]]
+            structure.xyz[0] = orientation.xyz[0, pro_sidechain_indices]
 
             #Adjust length of CA-CB bond
             template_ca_index = template.topology.select('resid ' + str(i-1) + " and name CA")
