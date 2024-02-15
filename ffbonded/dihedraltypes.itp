@@ -166,7 +166,10 @@ CT2    TC   NH1   CA  9 180.00  10.4600  2 ; from CT2-C-NH1-CX
 TC      CT2      NH1      CT1     9   180.000000     3.347200     2 ; Weiser-Santiso with CT2 replaced by CT1
 TC      CT2      NH1       CT     9   180.000000     3.347200     2 ; Weiser-Santiso with CT2 replaced by CT
 TC      CT2      NH1       CA     9   180.000000     3.347200     2 ; Weiser-Santiso with CT2 replaced by CA
-
+CT2      TC      NH1      CP1     9   180.000000    11.506000     2 ; from CT2--C--N--CP1
+CT2      TC      NH1      CP1     9     0.000000     1.255200     4 ; from CT2--C--N--CP1
+CT2      TC      NH1      CP3     9   180.000000    11.506000     2 ; from CT2--C--N--CP3
+CT2      TC      NH1      CP3     9     0.000000     1.255200     4 ; from CT2--C--N--CP3
 
 ; Original CHARMM...
 
