@@ -8,8 +8,7 @@
 ; Peptoid bonds from Mirijanian et al.
      CT2      TC      1   0.14900000    209200.00
      CT3      TC      1   0.14900000    209200.00
-     NH1     CP3      1   0.14340000    320000.00
-     NH1     CP1      1   0.14550000    320000.00
+
      NH1      TC      1   0.13450000    309616.00
        O      TC      1   0.12300000    518816.00
 ; additional bonds needed for NH2 termini (SA)
@@ -21,5 +20,7 @@
      CT2     OG301    1   0.14150000    301248.00
      CT3     OG301    1   0.14150000    301248.00
    CG2R61    FGR1     1   0.17400000    292880.00 ;taken from C-Cl
+     NH1     CP3      1   0.14340000    320000.00
+     NH1     CP1      1   0.14550000    320000.00
 ; Original CHARMM...
 
