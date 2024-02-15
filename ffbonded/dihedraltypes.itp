@@ -163,6 +163,7 @@ CT2    TC   NH1   CT  9 180.00  10.8784  2 ; from CT2-C-N-CT2/CT3
 CT2    TC   NH1   CT  9 0.0000  6.69440  1 ; from CT2-C-NH1-CX
 CT2    TC   NH1   CA  9 0.0000  6.69440  1 ; from CT2-C-NH1-CX
 CT2    TC   NH1   CA  9 180.00  10.4600  2 ; from CT2-C-NH1-CX
+ TC      NH1       CA     5   120.00    418.40   0.000000    0.000000 ; fentanyl, Lesnik et al. for n-phenyl
 TC      CT2      NH1      CT1     9   180.000000     3.347200     2 ; Weiser-Santiso with CT2 replaced by CT1
 TC      CT2      NH1       CT     9   180.000000     3.347200     2 ; Weiser-Santiso with CT2 replaced by CT
 TC      CT2      NH1       CA     9   180.000000     3.347200     2 ; Weiser-Santiso with CT2 replaced by CA
