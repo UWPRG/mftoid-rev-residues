@@ -1864,7 +1864,7 @@
            NL  -CLP  CA  CB
            CLP  CA  +NL  OL
 
-[ METd ] ; peptoid residue original methionine
+[ DECp ] ; peptoid N-decyl residue
   [ atoms ]
            NL   NH1   -0.210  0
            CB   CT2   -0.180  1
