@@ -683,11 +683,11 @@
 
 [ PROd ] ; peptoid residue original proline
   [ atoms ]
-           NL   NH1   -0.210  0
+           NL   NH1   -0.290  0
            CD   CP3    0.000  1
           HD1   HA2    0.090  2
           HD2   HA2    0.090  3
-           CA   CP1    0.030  4
+           CA   CP1    0.020  4
            HA   HB1    0.090  5
            CB   CP2   -0.180  6
           HB1   HA2    0.090  7
@@ -697,6 +697,7 @@
           HG2   HA2    0.090 11
           CLP    TC    0.510 12
            OL     O   -0.510 13
+
   [ bonds ]
           CLP    CA
           CLP   +NL
