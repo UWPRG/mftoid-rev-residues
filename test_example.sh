@@ -3,7 +3,7 @@ MINI=AD-T
 
 cd structure_maker/
 rm molecule*.pdb
-python minima.py --seq $NAME --mini $MINI
+python make_structure.py --seq $NAME --mini $MINI
 cd ..
 cp -r example_sim test_sim
 cp structure_maker/molecule.pdb test_sim/a_insert/

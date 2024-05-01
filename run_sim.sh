@@ -3,7 +3,7 @@ MINI=$2
 
 cd structure_maker/
 rm molecule*.pdb
-python minima.py --seq $NAME --mini $MINI
+python make_structure.py --seq $NAME --mini $MINI
 cd ../simulations
 if [ ! -d "$MINI" ]
 then 
