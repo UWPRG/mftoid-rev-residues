@@ -64,11 +64,11 @@ python make_structure.py --seq [SEQUENCE] --phi [PHI] --psi [PSI] --omega [OMEGA
 ```
 Notes:
 1. SEQUENCE: a string using the one-letter codes of any amino acid sequence. Additional residues exist, and their codes follow:  
-    	B: positively charge histidine  
-        J: histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen  
+    	+: positively charge histidine  
+        @: histidine with a proton on the epsilon-nitrogen, rather than the delta-nitrogen  
    	X: aminoethyl (Nae) side chain, positively charged  
    	Z: S-1-phenylethyl (Nspe) side chain  
-   	1: tert-butyl side chain  
+   	1: tert-butyl side chain (Ntbu)
    	3: p-bromophenyl-methyl side chain (Nbrpm)  
    	4: p-bromophenyl-ethyl side chain (Nbrpe)  
   	5: p-chlorophenyl-methyl side chain (Nclpm)  
@@ -76,10 +76,11 @@ Notes:
    	7: p-fluorophenyl-methyl side chain (Nfpm)  
    	8: p-fluorophenyl-ethyl side chain (Nfpe)  
    	9: p-iodophenyl-methyl side chain (Nipm)  
-   	0: p-iodophenyl-ethyl side chain (Nipe)  
-   	@: 1-methoxyethyl side chain  
-   	?: 1-hydroxyethyl sidechain  
-2. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
+   	0: p-iodophenyl-ethyl side chain (Nipe)
+   	J: ethyl-methoxyethyl side chain (Neme)
+   	U: decyl side chain (Ndec)
+   	O: 1-hydroxyethyl sidechain (Noe)
+3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
   	A-T: alpha minus, trans  
    	A-C: alpha minus, cis  
    	A+T: alpha plus, trans  
@@ -95,7 +96,7 @@ Notes:
 	HELIX: alpha-helix
 
 	Please note not every amino acid sequence has a valid structure in any given minimum (proline, for example, may cause serious problems): be sure to use a valid minimum for your sequence.  
-3. FILENAME: any filename is valid; however, if the filename does not end with ".pdb", that extension will be added automatically.
+4. FILENAME: any filename is valid; however, if the filename does not end with ".pdb", that extension will be added automatically.
 
 You may then use [FILENAME].pdb in your future simulations.
 
