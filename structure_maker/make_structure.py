@@ -44,8 +44,8 @@ FILENAMES = {
     'Q': 'GLNp',
     'G': 'GLYp',
     'H': 'HSDp',
-    'J': 'HSEp',
-    'B': 'HSPp',
+    '+': 'HSEp',
+    '@': 'HSPp',
     'I': 'ILEp',
     'L': 'LEUp',
     'K': 'LYSp',
@@ -69,8 +69,8 @@ FILENAMES = {
     '0': 'ITE',
     'Z': 'NSPE',
     'X': 'NAEk',
-    '@': 'EME',
-    '?': 'NOE',
+    'J': 'EME',
+    'O': 'NOE',
     'U': 'DECp'
 }
 
