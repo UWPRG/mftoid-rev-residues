@@ -69,7 +69,7 @@ Notes:
    	X: aminoethyl (Nae) side chain, positively charged  
    	Z: S-1-phenylethyl (Nspe) side chain  
    	1: tert-butyl side chain (Ntbu)
-   	2: phenyl side chain (Nph -- **DO NOT USE: UNSUITABLE**)
+   	2: phenyl side chain (Nph -- **DO NOT USE: UNSUITABLE**)  
    	3: p-bromophenyl-methyl side chain (Nbrpm)  
    	4: p-bromophenyl-ethyl side chain (Nbrpe)  
   	5: p-chlorophenyl-methyl side chain (Nclpm)  
