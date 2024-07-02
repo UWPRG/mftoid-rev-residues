@@ -81,7 +81,7 @@ Notes:
    	J: ethyl-methoxyethyl side chain (Neme)
    	U: decyl side chain (Ndec)
    	O: 1-hydroxyethyl sidechain (Noe)
-3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:
+3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:  
   	A-T: alpha minus, trans  
    	A-C: alpha minus, cis  
    	A+T: alpha plus, trans  
