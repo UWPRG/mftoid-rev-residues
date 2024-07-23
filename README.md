@@ -1,8 +1,4 @@
-# mftoid-rev-residues
-
-## Pfaendtner + Ferguson Research Team Collaboration
-
-## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts.
+## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts. A Pfaendtner + Ferguson Research Team Collaboration
 
 ## REPOSITORY CONTENTS
 	
