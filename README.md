@@ -16,6 +16,8 @@
 8. simulations: a directory in which your simulations will be stored if you choose to run our simulation scripts.
 9. run_sim.sh: a script you can use to generate peptoid structures from sequence and run MD simulations in water.
 10. environment.yml: an Anaconda environment you should use to run our scripts.
+11. vacuum_sim.sh: a script to run simulations in vacuum
+12. pyscf_sp: a folder containing our PySCF scripts
 
 ## INSTRUCTIONS
 
