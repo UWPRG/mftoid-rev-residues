@@ -2,7 +2,7 @@
 
 ## Pfaendtner + Ferguson Research Team Collaboration
 
-## GOAL: Build library of residues based on the Weiser+Santiso modified MFTOID force field peptoid backbone
+## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts.
 
 ## REPOSITORY CONTENTS
 	
