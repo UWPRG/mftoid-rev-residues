@@ -5,7 +5,6 @@ import os
 import argparse
 import subprocess
 import sys
-from openbabel import pybel
 from Bio.PDB import PDBIO
 from Bio.PDB.vectors import Vector, rotaxis, calc_dihedral, rotmat
 from Bio.SVDSuperimposer import SVDSuperimposer
@@ -100,10 +99,9 @@ def get_dihedral(traj, dihedral, i):
     search_indices = traj.topology.select(" or ".join(search_strings))
     return md.compute_dihedrals(traj, [search_indices])
     
-def make_polyglycine_angles(sequence, angles):
+def make_polyglycine_angles(sequence, angles, default_letter='G'):
     global NTERM_POSITION
     global CTERM_POSITION
-
     ##MAKE POLYGLYCINE 
     if angles.ndim == 1:
         assert len(angles) == 3
@@ -113,13 +111,12 @@ def make_polyglycine_angles(sequence, angles):
         assert angles.shape[0] == len(sequence) + 2
         assert angles.shape[1] == 3
         all_angles = angles
-
     new_seq = "G" + sequence + "G"
     for i in range(len(sequence) + 2):
         if new_seq[i] == 'P':
             geo = Geometry.geometry("P")
         else:
-            geo = Geometry.geometry("G")
+            geo = Geometry.geometry(default_letter)
         geo.phi = all_angles[i, 0]
         geo.psi_im1 = all_angles[i, 1]
         geo.omega = all_angles[i, 2]
@@ -128,22 +125,22 @@ def make_polyglycine_angles(sequence, angles):
             structure = PeptideBuilder.initialize_res(geo)
         else:
             PeptideBuilder.add_residue(structure, geo)
-
+    
     out = PDBIO()
     out.set_structure(structure)
-    out.save("template.pdb")
+    out.save(f"template_{sequence}.pdb")
 
     #SET CTERM/NTERM POSITIONS
 
-    template = md.load("template.pdb", standard_names=False)
+    template = md.load(f"template_{sequence}.pdb", standard_names=False)
     NTERM_POSITION = template.xyz[0, template.top.select("resSeq 1 and name C")[0]]
     CTERM_POSITION = template.xyz[0, template.top.select("resSeq {} and name N".format(len(sequence) + 2))[0]]
 
 
     #MAKE -H AND -NH STRUCTURES
-    command = "obabel template.pdb -O template_h.pdb -h"
+    command = f"obabel template_{sequence}.pdb -O template_{sequence}_h.pdb -h"
     subprocess.run(command.split(), stdout=subprocess.PIPE)
-    template_h = md.load('template_h.pdb', standard_names=False)
+    template_h = md.load(f'template_{sequence}_h.pdb', standard_names=False)
     top = copy.deepcopy(template_h.top)
     carbon_top = copy.deepcopy(template_h.top)
     onswitch_nitrogen = np.zeros(top.n_atoms, dtype=np.bool_)
@@ -155,7 +152,12 @@ def make_polyglycine_angles(sequence, angles):
 
     nterm_coord_exists = False
     ha_names = ['HA1', 'HA2', '', '']
+    hbc_names = ['HBA', 'HBB', 'HBC']
+    if default_letter == 'A':
+        ha_names = ['HA', '', '']
     ha_counters = np.zeros(len(new_seq), dtype=np.int32)
+    hbc_counters = np.zeros(len(new_seq), dtype=np.int32)
+
     pro_counters = [defaultdict(int) for k in range(len(new_seq))]
     for bond in template_h.top.bonds:
         if bond[1].element.name == 'hydrogen':
@@ -175,6 +177,11 @@ def make_polyglycine_angles(sequence, angles):
                 else:
                     carbon_top.atom(bond[1].index).name = ha_names[ha_counters[bond[0].residue.index]]
                 ha_counters[bond[0].residue.index] += 1
+            if bond[0].name == 'CB':
+                onswitch_carbon[bond[1].index] = 1
+                onswitch_nitrogen[bond[1].index] = 1
+                carbon_top.atom(bond[1].index).name = hbc_names[hbc_counters[bond[0].residue.index]]
+                hbc_counters[bond[0].residue.index] += 1
             elif bond[0].residue.name == 'PRO' and len(bond[0].name) > 1:
                 onswitch_carbon[bond[1].index] = 1
                 onswitch_nitrogen[bond[1].index] = 1
@@ -185,15 +192,34 @@ def make_polyglycine_angles(sequence, angles):
         if new_seq[i] == 'P':
             if ha_counter != 1:
                 print(f"Proline should have 1 HA. You have {ha_counter}. OpenBabel could not place HA correctly due to aphysical bond angles. Try a different dihedral configuration.")
+                _osremove(f"temp_{filename}")
+                _osremove(f'template_{sequence}.pdb')
+                _osremove(f'template_{sequence}_h.pdb')
                 raise ValueError(f"Proline should have 1 HA. You have {ha_counter}. OpenBabel could not place HA correctly due to aphysical bond angles. Try a different dihedral configuration.")
             for key, counter in pro_counter.items():
-                print(f"Your peptoid should have 2 {key}s. You have {counter}. OpenBabel could not place {key} correctly due to aphysical bond angles. Try a different dihedral configuration.")
+                
+                
                 if counter != 2:
+                    print(f"Your peptoid should have 2 {key}s. You have {counter}. OpenBabel could not place {key} correctly due to aphysical bond angles. Try a different dihedral configuration.")
+                    _osremove(f"temp_{filename}")
+                    _osremove(f'template_{sequence}.pdb')
+                    _osremove(f'template_{sequence}_h.pdb')
                     raise ValueError(f"Your peptoid should have 2 {key}s. You have {counter}. OpenBabel could not place {key} correctly due to aphysical bond angles. Try a different dihedral configuration.")
         else:
-            if ha_counter != 2:
-                print(f"Your amino acid {FILENAMES[new_seq[i]]} should have 2 HAs. You have {ha_counter}. OpenBabel could not place HAs correctly due to aphysical bond angles. Try a different dihedral configuration.")
-                raise ValueError(f"Your amino acid should have 2 HAs. You have {ha_counter}. OpenBabel could not place HAs correctly due to aphysical bond angles. Try a different dihedral configuration.")
+            if default_letter == 'G':
+                if ha_counter != 2:
+                    print(f"Your amino acid {FILENAMES[new_seq[i]]} should have 2 HAs. You have {ha_counter}. OpenBabel could not place HAs correctly due to aphysical bond angles. Try a different dihedral configuration.")
+                    _osremove(f"temp_{filename}")
+                    _osremove(f'template_{sequence}.pdb')
+                    _osremove(f'template_{sequence}_h.pdb')
+                    raise ValueError(f"Your amino acid should have 2 HAs. You have {ha_counter}. OpenBabel could not place HAs correctly due to aphysical bond angles. Try a different dihedral configuration.")
+            else:
+                if ha_counter != 1:
+                    _osremove(f"temp_{filename}")
+                    _osremove(f'template_{sequence}.pdb')
+                    _osremove(f'template_{sequence}_h.pdb')
+                    print(f"Your amino acid {FILENAMES[new_seq[i]]} should have 1 HA. You have {ha_counter}. OpenBabel could not place HAs correctly due to aphysical bond angles. Try a different dihedral configuration.")
+                    raise ValueError(f"Your amino acid should have 1 HA. You have {ha_counter}. OpenBabel could not place HAs correctly due to aphysical bond angles. Try a different dihedral configuration.")
     for i in range(top.n_atoms - 1, -1, -1):
         if not onswitch_nitrogen[i]:
             top.delete_atom_by_index(i)
@@ -203,27 +229,32 @@ def make_polyglycine_angles(sequence, angles):
 
     new_traj = md.Trajectory(template_h.xyz[0, onswitch_carbon], carbon_top)
     real = new_traj.atom_slice(new_traj.top.select("resSeq 2 to " + str(len(sequence) + 1)))    
-    real.save_pdb("template.pdb")
+    real.save_pdb(f"template_{sequence}.pdb")
     
     new_traj = md.Trajectory(template_h.xyz[0, onswitch_nitrogen], top)
     real_nh = new_traj.atom_slice(new_traj.top.select("resSeq 2 to " + str(len(sequence) + 1)))
-    real_nh.save_pdb("template_nh.pdb")
+    real_nh.save_pdb(f"template_{sequence}_nh.pdb")
     
     
     for suffix in ["", "_h", "_nh"]:
         for resid in range(2, len(sequence) + 2):
             aa_str = 'GLY'
+            if default_letter == 'A':
+                aa_str = 'ALA'
+                commands = f'sed|-i|s/CB /CBC/g|template_{sequence}{suffix}.pdb'
+                subprocess.run(commands.split('|'), stdout=subprocess.PIPE)
             if new_seq[resid - 1] == 'P':
                 aa_str = 'PRO'
             if resid > 10:
-                commands = 'sed|-i|s/{} A  {}/{} A  {}/g|template{}.pdb'.format(aa_str, resid, aa_str, resid - 1, suffix)
+                commands = f'sed|-i|s/{aa_str} A  {resid}/{aa_str} A  {resid - 1}/g|template_{sequence}{suffix}.pdb'
             elif resid == 10:
-                commands = 'sed|-i|s/{} A  10/{} A   9/g|template{}.pdb'.format(aa_str, aa_str, suffix)
+                commands = f'sed|-i|s/{aa_str} A  10/{aa_str} A   9/g|template_{sequence}{suffix}.pdb'
             else:
-                commands = 'sed|-i|s/{} A   {}/{} A   {}/g|template{}.pdb'.format(aa_str, resid, aa_str, resid - 1, suffix)
+                commands = f'sed|-i|s/{aa_str} A   {resid}/{aa_str} A   {resid - 1}/g|template_{sequence}{suffix}.pdb'
             subprocess.run(commands.split('|'), stdout=subprocess.PIPE)
 
-def make_peptide_angles():
+
+def make_peptide_angles(sequence, angles):
     global NTERM_POSITION
     global CTERM_POSITION
     if angles.ndim == 1:
@@ -235,8 +266,8 @@ def make_peptide_angles():
         assert angles.shape[1] == 3
         all_angles = angles
 
-    new_seq = "G" + sequence + "G"
-    for i in range(len(sequence) + 2):
+    new_seq = 'G' + sequence + 'G'
+    for i in range(len(new_seq)):
         geo = Geometry.geometry(new_seq[i])
         geo.phi = all_angles[i, 0]
         geo.psi_im1 = all_angles[i, 1]
@@ -249,22 +280,41 @@ def make_peptide_angles():
     
     out = PDBIO()
     out.set_structure(structure)
-    out.save("template.pdb")
-    command = "obabel template.pdb -O template_h.pdb -h"
-    subprocess.run(command.split(), stdout=subprocess.PIPE)
-    template = md.load("template.pdb", standard_names=False)
-    template_h = md.load('template_h.pdb', standard_names=False)
+    out.save(f"temp_{sequence}.pdb")
+    template = md.load(f"temp_{sequence}.pdb")
     NTERM_POSITION = template.xyz[0, template.top.select("resSeq 1 and name C")[0]]
     CTERM_POSITION = template.xyz[0, template.top.select("resSeq {} and name N".format(len(sequence) + 2))[0]]
-    real_h = template_h.atom_slice(template_h.top.select("resSeq 2 to " + str(len(sequence) + 1)))
-    real_h.save_pdb("template.pdb")
-    os.remove("template_h.pdb")
+    new = template.atom_slice(template.topology.select(f"resSeq 2 to {len(sequence) + 1}"))
+    new.save_pdb(f"temp_{sequence}.pdb")
+    for resid in range(2, len(sequence) + 2):
+        if sequence[resid - 2] == 'H':
+            aa_str = 'HIS'
+        else:
+            aa_str = FILENAMES[sequence[resid - 2]][:-1]
+        if resid > 10:
+            commands = f'sed|-i|s/{aa_str} A  {resid}/{aa_str} A  {resid - 1}/g|temp_{sequence}.pdb'
+        elif resid == 10:
+            commands = f'sed|-i|s/{aa_str} A  10/{aa_str} A   9/g|temp_{sequence}.pdb'
+        else:
+            commands = f'sed|-i|s/{aa_str} A   {resid}/{aa_str} A   {resid - 1}/g|temp_{sequence}.pdb'
+        subprocess.run(commands.split('|'), stdout=subprocess.PIPE)
+    # command = "obabel template.pdb -O template_h.pdb -h"
+    # subprocess.run(command.split(), stdout=subprocess.PIPE)
+    # template = md.load("template.pdb", standard_names=False)
+    # template_h = md.load('template_h.pdb', standard_names=False)
+    # NTERM_POSITION = template.xyz[0, template.top.select("resSeq 1 and name C")[0]]
+    # CTERM_POSITION = template.xyz[0, template.top.select("resSeq {} and name N".format(len(sequence) + 2))[0]]
+    # real_h = template_h.atom_slice(template_h.top.select("resSeq 2 to " + str(len(sequence) + 1)))
+    # real_h.save_pdb("template.pdb")
+    # os.remove("template_h.pdb")
+    real_h = md.load(f"temp_{sequence}.pdb")
+    
     return real_h
     
 def load_sequence(sequence, filename):
     
-    backbone = md.load("template.pdb", standard_names=False)
-    template = md.load("template_nh.pdb", standard_names=False)
+    backbone = md.load(f"template_{sequence}.pdb", standard_names=False)
+    template = md.load(f"template_{sequence}_nh.pdb", standard_names=False)
    
     nres = backbone.topology.n_residues
     i = 1
@@ -276,11 +326,8 @@ def load_sequence(sequence, filename):
         
         # Read the structure PDB file
         filename2 = ".nobkb_residue_pdb/" + FILENAMES[letter] + ".pdb"
-        
         if letter != 'P' and letter != 'G':
             structure = md.load(filename2, standard_names=False)
-            
-
             #Place sidechain where the N-hydrogen used to be
             cur_h = template.topology.select("resSeq " + str(i) + " and name H")[0]
             cur_n = template.topology.select("resSeq " + str(i) + " and name N")[0]
@@ -319,6 +366,7 @@ def load_sequence(sequence, filename):
         i += 1
     
     backbone.save_pdb(filename)
+    
 
     with open(filename, "r") as f:
         lines = f.readlines()
@@ -335,36 +383,43 @@ def _osremove(f):
     if os.path.isfile(f):
         os.remove(f)
 
-def minimize_energy(sequence, filename_before, filename_after, angles):
-    for file in os.listdir('.gmx_files'):
-        _osremove(os.path.join('.gmx_files', file))
-    _osremove("posre.itp")    
-    _osremove("#posre.itp.1#")
-    
-    molecule = md.load(filename_before, standard_names=False)
-    check_files([filename_before])  
-    insert_molecules_cubic(True, pdb=filename_before, box=".gmx_files/box.gro", dim=max(float(len(sequence)), 3.5))
-    _osremove(filename_before)
-    check_files([".gmx_files/box.gro"])
-    pdb2gmx(True, input_pdb=".gmx_files/box.gro", output_gro=".gmx_files/struct.gro", top=".gmx_files/topol.top", ff="charmm36-feb2021", np=1)
-    check_files([".gmx_files/struct.gro"])
+def minimize_energy(sequence, filename_before, filename_after, angles, tide=False):
+    # for file in os.listdir('.gmx_files'):
+    #     _osremove(os.path.join('.gmx_files', file))
 
-    editconf(True, ".gmx_files/struct.gro", ".gmx_files/centered.gro", center=True)
-    # fix_dihedral_posres(molecule, angles)
-    fix_posres(molecule, 0, molecule.top.n_residues - 1)
-    check_files([".em_peptoid.mdp", ".gmx_files/centered.gro", ".gmx_files/topol.top", ".gmx_files/posre.itp"])
-    grompp(True, mdp=".em_peptoid.mdp", coord=".gmx_files/centered.gro", top=".gmx_files/topol.top", tpr=".gmx_files/em.tpr", use_index=False, maxwarn=3, np=1)
-    check_files([".gmx_files/em.tpr"])
-    mdrun(True, deffnm=".gmx_files/em", plumed=False, np=1)
-    fix_posres(molecule, 0, molecule.top.n_residues, 20000)
-    check_files([".gmx_files/em.gro"])
-    editconf(True, ".gmx_files/em.gro", filename_after, center=False)
-    _osremove("posre.itp")    
-    _osremove("#posre.itp.1#")
+    cd = os.getcwd()
+    prev_file = os.path.join(cd, filename_before)
+    after_file = os.path.join(cd, filename_after)
+    em_peptoid = os.path.join(cd, '.em_peptoid.mdp')
     
-def fix_posres(traj, res_begin, res_end, const=100000):
+    os.mkdir(os.path.join(cd, f'.gmx_files_{sequence}'))
+    os.chdir(os.path.join(cd, f'.gmx_files_{sequence}'))
+    molecule = md.load(prev_file, standard_names=False)
+    check_files([prev_file])  
+    insert_molecules_cubic(True, pdb=prev_file, box="box.gro", dim=max(float(len(sequence)), 3.5))
+    check_files(["box.gro"])
+    pdb2gmx(True, input_pdb="box.gro", output_gro="struct.gro", top="topol.top", ff="charmm36-feb2021", np=1, tide=tide)
+    check_files(["struct.gro"])
+    editconf(True, "struct.gro", "centered.gro", center=True)
+    # fix_dihedral_posres(molecule, angles)
+    fix_posres(sequence, molecule, 0, molecule.top.n_residues - 1)
+    check_files([em_peptoid, "centered.gro", "topol.top", "posre.itp"])
+    grompp(True, mdp=em_peptoid, coord=f"centered.gro", top="topol.top", tpr="em.tpr", use_index=False, maxwarn=3, np=1)
+    check_files(["em.tpr"])
+    mdrun(True, deffnm="em", plumed=False, np=1)
+    # fix_posres(molecule, 0, molecule.top.n_residues, 20000)
+    check_files(["em.gro"])
+    print(f"editconf-ing from {sequence} to {after_file}")
+    editconf(True, "em.gro", after_file, center=False)
+    print(f"editconf-ed from {sequence} to {after_file}")
+    _osremove(prev_file)
+    os.chdir(cd)
+
+    shutil.rmtree(f".gmx_files_{sequence}")
+    
+def fix_posres(sequence, traj, res_begin, res_end, const=100000):
     backbone_idxs = traj.topology.select(f"resSeq {res_begin} to {res_end} and (name CA or name NL or name CLP)")
-    with open('.gmx_files/posre.itp', "w") as f:
+    with open('posre.itp', "w") as f:
         f.write('[ position_restraints ]\n\n')
         for d in backbone_idxs:
             f.write(f'{d+1}\t1\t{const}\t{const}\t{const}\n')
@@ -419,17 +474,42 @@ def attach_endcap(filename, nterm, cterm, n_indexname, c_indexname):
         table.loc[table['chainID'] == 1, 'resSeq'] = i 
         i += 1
         table['chainID'] = 0
-
         top = md.Topology.from_dataframe(table, bonds)
 
         molecule = md.Trajectory(molecule.xyz, top)
+    # molecule.save_pdb("temp.pdb")
     molecule.save_pdb(filename)
 
-def pdb_to_peptoid_forcefield(sequence, filename):
+def fix_peptide_forcefield(sequence, filename):
+    with open(filename) as f:
+        lines = f.readlines()
+    with open(filename, "w") as f:
+        for line in lines:
+            if "MODEL" in line:
+                f.write(line)
+            if "ACE" in line:
+                l = line[:25] + "0   " + line[29:]
+                f.write(l)
+        for line in lines:
+            if "ACE" in line or 'MODEL' in line:
+                continue
+            if "NME" in line:
+                nres = int(line[25:29])
+                if nres > 10:
+                    l = line[:25] + f"{nres-1}  " + line[29:]
+                else:
+                    l = line[:25] + f"{nres+1}   " + line[29:]
+                if "TER" in l:
+                    l += ("\n")
+                f.write(l)
+                
+            else:
+                f.write(line)
+def pdb_to_peptoid_forcefield(sequence, filename, cter):
     with open(filename) as f:
         lines = f.readlines()
     atom_number = 1
-
+    cterm_counter = 1
     with open(filename, "w") as f:
         #Adjust PDB file so it includes peptoid atom names, rather than peptide atom names for the caps and backbone. 
         for line in lines:
@@ -460,7 +540,7 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                 continue
             if "ACE" in line or 'MODEL' in line or 'CONECT' in line or 'CRYST' in line or 'REMARK' in line:
                 continue
-            elif "NME" in line:
+            elif "NME" in line or cter in line:
                 numlen = len(str(atom_number))
                 str0 = " " * (5 - numlen) + str(atom_number) + "  "
                 atom_number += 1
@@ -473,7 +553,13 @@ def pdb_to_peptoid_forcefield(sequence, filename):
                 if line[13:19] == "C   NM":
                     str1 = "CAT"
                 elif line[13:15] == "H ":
-                    str1 = "HNT"
+                    if cter == 'NH2':
+                        str1 = "HN" + str(cterm_counter)
+                        cterm_counter += 1
+                    else:
+                        str1 = "HNT"
+                # elif line[13:15] == "H ":
+                #     str1 = "HNT"
                 elif line[13:18] == "H1  N":
                     str1 = "HT1"
                 elif line[13:18] == "H2  N":
@@ -513,25 +599,31 @@ def pdb_to_peptoid_forcefield(sequence, filename):
 
 
 
-def create_peptoid(sequence, angle_seq, filename="molecule.pdb", endcap_par=endcap_params):
+def create_peptoid(sequence, angle_seq, filename="molecule.pdb", default_letter='G', nomin=False, endcap_par=endcap_params):
     if not filename.endswith('.pdb'):
         filename = filename + '.pdb'
-    make_polyglycine_angles(sequence, angle_seq)
-    load_sequence(sequence, "molecule.pdb")
-    attach_endcap("molecule.pdb", **endcap_par)
-    pdb_to_peptoid_forcefield(sequence, "molecule.pdb")
-    minimize_energy(sequence, "molecule.pdb", filename, angle_seq)
-    
-    _osremove('template.pdb')
-    _osremove('template_h.pdb')
-    _osremove('template_nh.pdb')
+    make_polyglycine_angles(sequence, angle_seq, default_letter=default_letter)
+    load_sequence(sequence, f"temp_{filename}")
+    attach_endcap(f"temp_{filename}", **endcap_par)
+    if default_letter == 'G':
+        pdb_to_peptoid_forcefield(sequence, f"temp_{filename}", endcap_params['cterm'].replace("p_f", ""))
+        if not nomin:
+            minimize_energy(sequence, f"temp_{filename}", filename, angle_seq, tide=False)
+        else:
+            shutil.copy(f"temp_{filename}", filename)
+    _osremove(f"temp_{filename}")
+    _osremove(f'template_{sequence}.pdb')
+    _osremove(f'template_{sequence}_h.pdb')
+    _osremove(f'template_{sequence}_nh.pdb')
     
     return md.load(filename, standard_names=False)
 
-def create_peptide(sequence, angle_seq, filename="peptide.pdb", endcap_par=endcap_params):
+def create_peptide(sequence, angle_seq, filename="peptide.pdb", default_letter='G', nomin=False, endcap_par=endcap_params):
     make_peptide_angles(sequence, angle_seq)
-    attach_endcap(filename, **endcap_par)
-    minimize_energy(sequence, "molecule.pdb", filename, angle_seq)
+    attach_endcap(f"temp_{sequence}.pdb", **endcap_par)
+    fix_peptide_forcefield(sequence, f"temp_{sequence}.pdb")
+    if not nomin:
+        minimize_energy(sequence, f"temp_{sequence}.pdb", filename, angle_seq, tide=True)
     
 def _run_tide_or_toid(tide_or_toid):
     if tide_or_toid:
@@ -602,13 +694,32 @@ def run():
         action="store_true",
         help="Overwrite existing files."
     )
+    parser.add_argument(
+        "--nomin",
+        action="store_true",
+        help="Don't do minimization."
+    )
+    parser.add_argument(
+        "--cter",
+        type=str,
+        default="nme",
+        metavar="cter",
+        help="C-Terminus"
+    )
+    parser.add_argument(
+        "--nsa",
+        action="store_true",
+        help="N-substituted alanine"
+    )
     args = parser.parse_args()
 
     if args.seq is None:
         raise ValueError("Sequence Entry Needed")
 
     # Load the minimum that the peptoid is in
-
+    default_letter = 'G'
+    if args.nsa:
+        default_letter = 'A'
     if args.file.endswith(".pdb"):
         fname = args.file
     else:
@@ -633,24 +744,35 @@ def run():
 
     # assert args.mini is not None or (args.phi is not None and args.psi is not None and args.omega is not None) or args.anglefile is not None
 
+    if args.cter == 'NH2':
+        endcap_params['cterm'] = 'NH2p_f'
+    elif args.cter == 'NDM':
+        endcap_params['cterm'] = 'NDMp_f'
+    elif args.tide:
+        endcap_params['cterm'] = 'NME_f'
+        endcap_params['nterm'] = 'ACE_f'
+        endcap_params['c_indexname'] = 'NT'
+        endcap_params['n_indexname'] = 'C'
+        
     if args.mini is not None:
-
-        # try:
-        angles = np.array(MINIMA_DICT[args.mini])
-        _run_tide_or_toid(args.tide)(args.seq, angles, fname)
-        return
-        # except:
-        #     print("Ramachandran minimum error -- minimum mist be one of: " + str(MINIMA_FILENAMES) + ". Your minimum is " + args.mini)
+        try:
+            angles = np.array(MINIMA_DICT[args.mini])
+            _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
+            return
+        except:
+            raise ValueError("Ramachandran minimum error -- minimum mist be one of: " + str(MINIMA_FILENAMES) + ". Your minimum is " + args.mini)
     if args.anglefile is not None:
         try:
             angles = np.loadtxt(args.anglefile)
-            _run_tide_or_toid(args.tide)(args.seq, angles, fname)
+            if np.all(angles < 2 * np.pi) and np.all(angles > -np.pi):
+                angles *= (180 / np.pi)
+            _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
             return
         except:
             print("Angle file error -- Could not load text file as numpy: ", args.anglefile)
     if args.phi is not None and args.psi is not None and args.omega is not None:
         angles = np.array([args.phi, args.psi, args.omega])
-        _run_tide_or_toid(args.tide)(args.seq, angles, fname)
+        _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
         return
     else:
         print("Input Error -- Must enter: minimum (--mini) OR phi/psi/omega triplet (--phi, --psi, --omega) OR text file containing angles (--anglefile)")

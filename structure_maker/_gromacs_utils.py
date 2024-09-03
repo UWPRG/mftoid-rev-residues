@@ -128,7 +128,7 @@ def make_ndx(mpirun, scan_atoms, index_input, np=1):
     return
 
 
-def pdb2gmx(mpirun, input_pdb, output_gro, top="topol.top", ff="charmm36-feb2021", np=1, water="none"):
+def pdb2gmx(mpirun, input_pdb, output_gro, top="topol.top", ff="charmm36-feb2021", np=1, water="none", tide=False):
     """
     Python wrapper for gmx pdb2gmx
 
@@ -144,7 +144,18 @@ def pdb2gmx(mpirun, input_pdb, output_gro, top="topol.top", ff="charmm36-feb2021
         print ("mpirun only takes bool as input")
 
     commands = [mpi, "pdb2gmx", "-f", input_pdb, "-o", output_gro, "-p", top, "-ff", ff, "-water", water]
-    subprocess.run(commands) # selects FF in current directory
+    # if tide:
+    #     first_commands = ['echo', '3', '|', 'echo', '4', '|']
+    #     last_commands = ['-ter']
+    #     commands = first_commands + commands + last_commands
+    if tide:
+        commands.append('-ter')
+        process = subprocess.Popen(commands, stdin=subprocess.PIPE, stdout=subprocess.PIPE, text=True)
+
+        process.communicate('3\n4\n')
+
+    else:
+        subprocess.run(commands) # selects FF in current directory
     return
 
 def editconf(mpirun, input_gro, output_gro, use_distance=False, distance=1.3, np=1, center=False):
