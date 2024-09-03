@@ -107,6 +107,20 @@ bash run_sim.sh [SEQUENCE] [MINIMUM CODE]
 For practicality and speed concerns, we recommend you create an additional script to wrap this code so you may run it on a GPU or multiple parallel CPUs.   
 To adjust conditions of your simulations, view the files in the ```simulation_template``` directory. Specifically, ```simulation_template/mini_sim.sh``` will be useful to modify for the number of molecules or the dimension of your box. The specific MD parameter files (.mdp) for your simulations are located in `2_em`, `3_md`, and `4_pb` in the `simulation_template` directory.
 
+### Adding new residues
+
+You may want expand this package to accommodate simulations of peptoids of interest to you, which may include residues not yet incorporated into this package. These resiudes may be added by first adding the necessary force field parameters in the same way as one would do with general CHARMM, and then (optionally) adding files and codes enabling the compatibility with the structure generator. First, for the force field paramters:   
+1. Create a residue topology (.rtp) file for your residue, and append it to merged.rtp
+2. Add any atom types not familiar to CHARMM36-Feb2021 into atomtypes.atp   
+3. Use the CGenFF parameter generator to determine which additional bonded force field parameters need to be added. Add the resulting bond, angle, and dihedral parameters, **with the exception of phi, psi, omega, and rho dihedral angles, as well as chi_1 dihedral angles with atom types identical to NPhe or Nspe**, to ffbonded.itp in the same locations as the other MoSiC-CGenFF-NTOID parameters. **Note that you must convert the force constants from CHARMM to GROMACS-compatible units**.
+4. Add a PDB of your residue into the folder "residue_pdb" with the the filename [RESp].pdb, where [RESp] is replaced by the name of your residue.   
+
+Then, optionally for the structure generator:
+1. Copy the PDB file of your residues and remove the backbone atoms and alpha-hydrogens of the copied PDB. Save it in the structure_maker/.nobkb_residue_pdb folder as [RESp].pdb, where [RESp] is replaced by the name of your residue.
+2. Create a new single-character code for your residue (for a single residue, we suggest 'B'. Beyond this, you may have to get creative with special characters or lowercase letters.) Add a line to the FILENAMES dictionary of make_structure.py  with the following information: '[character]: [RESp]', where [RESp] is replaced by the name of your residue.
+
+You may now take full advantage of our high-throughput simulation package for your new residue.
+
 ### Testing the High Throughput Simulation Package
 
 To test the functionality of this simulation package, you may run the following bash command: ```bash test_example.sh```
