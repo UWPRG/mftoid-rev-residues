@@ -454,7 +454,7 @@ def attach_endcap(filename, nterm, cterm, n_indexname, c_indexname):
     ace_attach = ace.xyz[0, ace_index]
     n_translate =  NTERM_POSITION - ace_attach
     ace.xyz[0] += n_translate    
-    n_bond = NTERM_POSITION - molecule.xyz[0, molecule.topology.select("resid 0 and name N")[0]]
+    n_bond = NTERM_POSITION - molecule.xyz[0, molecule.topology.select("resid 0 and (name N or name NT)")[0]]
     nme_attach = nme.xyz[0, nme.topology.select(f'name {c_indexname}')[0]]
     nres = molecule.topology.n_residues
     c_translate = CTERM_POSITION - nme_attach
@@ -464,7 +464,7 @@ def attach_endcap(filename, nterm, cterm, n_indexname, c_indexname):
     for cap, idx, bond in zip((ace, nme), (0, nres), (n_bond, c_bond)):
         first = np.copy(cap.xyz[0, 0])
         cap.xyz[0] -= first
-        cur_orientation = np.mean(cap.xyz[0, cap.topology.select("name H or not element H")[1:]], axis=0)
+        cur_orientation = np.mean(cap.xyz[0, cap.topology.select("name H or name HN1 or name HN2 or not element H")[1:]], axis=0)
         rmat = rotmat(Vector(*cur_orientation), Vector(*bond))
         cap.xyz[0] = (np.matmul(rmat, cap.xyz[0].T)).T
         cap.xyz[0] += first
@@ -477,7 +477,7 @@ def attach_endcap(filename, nterm, cterm, n_indexname, c_indexname):
         top = md.Topology.from_dataframe(table, bonds)
 
         molecule = md.Trajectory(molecule.xyz, top)
-    # molecule.save_pdb("temp.pdb")
+    molecule.save_pdb("debug.pdb")
     molecule.save_pdb(filename)
 
 def fix_peptide_forcefield(sequence, filename):
@@ -493,7 +493,7 @@ def fix_peptide_forcefield(sequence, filename):
         for line in lines:
             if "ACE" in line or 'MODEL' in line:
                 continue
-            if "NME" in line:
+            if "NME" in line or "NH2" in line:
                 nres = int(line[25:29])
                 if nres > 10:
                     l = line[:25] + f"{nres-1}  " + line[29:]
@@ -744,23 +744,26 @@ def run():
 
     # assert args.mini is not None or (args.phi is not None and args.psi is not None and args.omega is not None) or args.anglefile is not None
 
-    if args.cter == 'NH2':
+    if args.cter == 'NH2' and not args.tide:
         endcap_params['cterm'] = 'NH2p_f'
     elif args.cter == 'NDM':
         endcap_params['cterm'] = 'NDMp_f'
     elif args.tide:
-        endcap_params['cterm'] = 'NME_f'
-        endcap_params['nterm'] = 'ACE_f'
+        if args.cter == 'NH2':
+            endcap_params['cterm'] = 'NH2_f'
+        else:
+            endcap_params['cterm'] = 'NME_f'
         endcap_params['c_indexname'] = 'NT'
+        endcap_params['nterm'] = 'ACE_f'
         endcap_params['n_indexname'] = 'C'
         
     if args.mini is not None:
         try:
             angles = np.array(MINIMA_DICT[args.mini])
-            _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
-            return
         except:
             raise ValueError("Ramachandran minimum error -- minimum mist be one of: " + str(MINIMA_FILENAMES) + ". Your minimum is " + args.mini)
+        _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
+        return
     if args.anglefile is not None:
         try:
             angles = np.loadtxt(args.anglefile)
