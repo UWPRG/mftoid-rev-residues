@@ -1,6 +1,6 @@
 ## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts. A Pfaendtner + Ferguson Research Team Collaboration   
 
-View our preprint before using: (https://arxiv.org/abs/2409.06103) 
+View our preprint before using: https://arxiv.org/abs/2409.06103   
 
 ## REPOSITORY CONTENTS
 	
