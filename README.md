@@ -1,4 +1,6 @@
-## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts. A Pfaendtner + Ferguson Research Team Collaboration
+## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts. A Pfaendtner + Ferguson Research Team Collaboration   
+
+View our preprint before using: (https://arxiv.org/abs/2409.06103) 
 
 ## REPOSITORY CONTENTS
 	
@@ -77,7 +79,6 @@ Notes:
    	9: p-iodophenyl-methyl side chain (Nipm)  
    	0: p-iodophenyl-ethyl side chain (Nipe)
    	J: ethyl-methoxyethyl side chain (Neme)
-   	U: decyl side chain (Ndec)
    	O: 1-hydroxyethyl sidechain (Noe)
 3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:  
   	A-T: alpha minus, trans  
