@@ -129,7 +129,6 @@ def make_polyglycine_angles(sequence, angles, default_letter='G'):
     out = PDBIO()
     out.set_structure(structure)
     out.save(f"template_{sequence}.pdb")
-
     #SET CTERM/NTERM POSITIONS
 
     template = md.load(f"template_{sequence}.pdb", standard_names=False)
@@ -177,16 +176,16 @@ def make_polyglycine_angles(sequence, angles, default_letter='G'):
                 else:
                     carbon_top.atom(bond[1].index).name = ha_names[ha_counters[bond[0].residue.index]]
                 ha_counters[bond[0].residue.index] += 1
-            if bond[0].name == 'CB':
-                onswitch_carbon[bond[1].index] = 1
-                onswitch_nitrogen[bond[1].index] = 1
-                carbon_top.atom(bond[1].index).name = hbc_names[hbc_counters[bond[0].residue.index]]
-                hbc_counters[bond[0].residue.index] += 1
             elif bond[0].residue.name == 'PRO' and len(bond[0].name) > 1:
                 onswitch_carbon[bond[1].index] = 1
                 onswitch_nitrogen[bond[1].index] = 1
                 carbon_top.atom(bond[1].index).name = "H" + bond[0].name[1] + str(pro_counters[bond[0].residue.index][bond[0].name] + 1)
                 pro_counters[bond[0].residue.index][bond[0].name] += 1
+            elif bond[0].name == 'CB':
+                onswitch_carbon[bond[1].index] = 1
+                onswitch_nitrogen[bond[1].index] = 1
+                carbon_top.atom(bond[1].index).name = hbc_names[hbc_counters[bond[0].residue.index]]
+                hbc_counters[bond[0].residue.index] += 1
     
     for i, (ha_counter, pro_counter) in enumerate(zip(ha_counters, pro_counters)):
         if new_seq[i] == 'P':
@@ -197,13 +196,11 @@ def make_polyglycine_angles(sequence, angles, default_letter='G'):
                 _osremove(f'template_{sequence}_h.pdb')
                 raise ValueError(f"Proline should have 1 HA. You have {ha_counter}. OpenBabel could not place HA correctly due to aphysical bond angles. Try a different dihedral configuration.")
             for key, counter in pro_counter.items():
-                
-                
-                if counter != 2:
+                if counter != 2 and key != 'CA':
                     print(f"Your peptoid should have 2 {key}s. You have {counter}. OpenBabel could not place {key} correctly due to aphysical bond angles. Try a different dihedral configuration.")
+                    # _osremove(f'template_{sequence}.pdb')
+                    # _osremove(f'template_{sequence}_h.pdb')
                     _osremove(f"temp_{filename}")
-                    _osremove(f'template_{sequence}.pdb')
-                    _osremove(f'template_{sequence}_h.pdb')
                     raise ValueError(f"Your peptoid should have 2 {key}s. You have {counter}. OpenBabel could not place {key} correctly due to aphysical bond angles. Try a different dihedral configuration.")
         else:
             if default_letter == 'G':
@@ -540,7 +537,7 @@ def pdb_to_peptoid_forcefield(sequence, filename, cter):
                 continue
             if "ACE" in line or 'MODEL' in line or 'CONECT' in line or 'CRYST' in line or 'REMARK' in line:
                 continue
-            elif "NME" in line or cter in line:
+            elif "NME" in line or cter in line[17:22]:
                 numlen = len(str(atom_number))
                 str0 = " " * (5 - numlen) + str(atom_number) + "  "
                 atom_number += 1
