@@ -453,7 +453,7 @@ def attach_endcap(filename, nterm, cterm, n_indexname, c_indexname):
     ace.xyz[0] += n_translate    
     n_bond = NTERM_POSITION - molecule.xyz[0, molecule.topology.select("resid 0 and (name N or name NT)")[0]]
     nme_attach = nme.xyz[0, nme.topology.select(f'name {c_indexname}')[0]]
-    nres = molecule.topology.n_residues
+    nres = len(molecule.topology.select('name CA'))
     c_translate = CTERM_POSITION - nme_attach
     nme.xyz[0] += c_translate
     c_bond = CTERM_POSITION - molecule.xyz[0, molecule.topology.select("resid " + str(nres - 1) + " and name C")[0]]
