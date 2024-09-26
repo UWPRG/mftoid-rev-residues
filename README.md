@@ -1,6 +1,6 @@
 ## MoSiC-CGenFF-NTOID: A Peptoid Simulation Package based on Weiser & Santiso's CGenFF-NTOID. Force Field Parameters, Structure Generator, and Simulation Scripts. A Pfaendtner + Ferguson Research Team Collaboration   
 
-View our preprint before using: https://arxiv.org/abs/2409.06103   
+View our preprint before using the force field: https://arxiv.org/abs/2409.06103.   
 
 ## REPOSITORY CONTENTS
 	
@@ -35,20 +35,6 @@ Download the CHARMM36 forcefield from the [MacKerell Lab website](https://macker
 python attach_peptoid_ff.py
 ```
 
-Otherwise, you may update your force field files manually:
-
-1. Add the peptoid parameter TC found here in ffnonbonded.itp into the ffnonbonded.itp doc in your CHARMM36 FF file.
-
-2. Add the information contained here in the ffbonded directory to the ffbonded.itp doc in your CHARMM36 FF file. There are 4 main sections of the ffbonded.itp file; add bondtypes.itp to the [bondtypes] section, angletypes.itp to the [angletypes] section, dihedraltypes.itp to the first [dihedraltypes] section, and improper.itp to the second [dihedraltypes] section (it should mention impropers).
-
-Note: In bondtypes.itp/angletypes.itp/etc., you only need to add the lines with information about peptoids. I have included the header for each section and followed each section with "; Original CHARMM..." so you know where to place the information we've gathered.
-
-3. Lastly, add 
-```
-TC   12.01100 ; peptoid carbonyl carbon
-```
-to atomtypes.atp in your FF directory.
-
 Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoids and produce topologies using the updated CHARMM36 FF.
 
 ### Using the Structure Generator
@@ -77,9 +63,9 @@ Notes:
    	7: p-fluorophenyl-methyl side chain (Nfpm)  
    	8: p-fluorophenyl-ethyl side chain (Nfpe)  
    	9: p-iodophenyl-methyl side chain (Nipm)  
-   	0: p-iodophenyl-ethyl side chain (Nipe)
-   	J: ethyl-methoxyethyl side chain (Neme)
-   	O: 1-hydroxyethyl sidechain (Noe)
+   	0: p-iodophenyl-ethyl side chain (Nipe)   
+   	J: ethyl-methoxyethyl side chain (Neme)   
+   	O: 1-hydroxyethyl sidechain (Noe)   
 3. MINIMUM CODE: one of the following twelve codes for the twelve possible minima:  
   	A-T: alpha minus, trans  
    	A-C: alpha minus, cis  
