@@ -112,3 +112,16 @@ You may now take full advantage of our high-throughput simulation package for yo
 
 To test the functionality of this simulation package, you may run the following bash command: ```bash test_example.sh```
 This should run a simulation of disarcosine in water. After energy minimization and NVT and NPT equilibration, it will run for 5 picoseconds. It will create a folder called ```test_sim``` and the filenames inside that folder should be the same as the comparison folder ```test_sim_comp```. If you have any issues, please open an issue in this repository.
+
+### Citation
+```
+@misc{berlaga2024,
+      title={A Modular and Extensible CHARMM-Compatible Model for All-Atom Simulation of Polypeptoids}, 
+      author={Alex Berlaga and Kaylyn Torkelson and Aniruddha Seal and Jim Pfaendtner and Andrew L. Ferguson},
+      year={2024},
+      eprint={2409.06103},
+      archivePrefix={arXiv},
+      primaryClass={cond-mat.soft},
+      url={https://arxiv.org/abs/2409.06103}, 
+}
+```
