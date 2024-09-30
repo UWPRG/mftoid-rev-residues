@@ -34,6 +34,26 @@ Download the CHARMM36 forcefield from the [MacKerell Lab website](https://macker
 ```
 python attach_peptoid_ff.py
 ```
+For the sake of the compatibility of GROMACS and CHARMM36 (see: https://gromacs.bioexcel.eu/t/capping-residue-ace-not-recognised-from-the-rtp-file/1694), replace the [ ACE ] residue (**NOT ACEp**) in your merged.rtp with the following text:
+```
+[ ACE ] ; N-terminal acetyl patch
+ [ atoms ]
+           CAY     CT3     -0.270  1
+           HY1     HA3     0.090   1
+           HY2     HA3     0.090   1
+           HY3     HA3     0.090   1
+           C       C       0.510   2
+           O       O       -0.510  2
+ [ bonds ]
+           C       CAY
+           C       +N
+           CAY     HY1
+           CAY     HY2
+           CAY     HY3
+           O       C
+ [ impropers ]
+            C      CAY     +N      O
+```
 
 Once these updates have been made, you should be able to use the peptoid residues found in residue_pdb to build your own peptoids and produce topologies using the updated CHARMM36 FF.
 
@@ -125,3 +145,5 @@ This should run a simulation of disarcosine in water. After energy minimization 
       url={https://arxiv.org/abs/2409.06103}, 
 }
 ```
+### Upcoming updates
+Incorporating the ACE changes within `attach_peptoid_ff.py`, adding hydrogen database (.hdb) entries for `pdb2gmx` using hydrogen-free input files.
