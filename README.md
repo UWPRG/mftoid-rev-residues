@@ -34,7 +34,7 @@ Download the CHARMM36 forcefield from the [MacKerell Lab website](https://macker
 ```
 python attach_peptoid_ff.py
 ```
-For the sake of the compatibility of GROMACS and CHARMM36 (see: https://gromacs.bioexcel.eu/t/capping-residue-ace-not-recognised-from-the-rtp-file/1694), replace the [ ACE ] residue (**NOT ACEp**) in your `merged.rtp` with the following text:
+For the sake of the compatibility of GROMACS and CHARMM36 (see: https://gromacs.bioexcel.eu/t/capping-residue-ace-not-recognised-from-the-rtp-file/1694), replace the `[ ACE ]` residue (**NOT ACEp**) in your `merged.rtp` with the following text:
 ```
 [ ACE ] ; N-terminal acetyl patch
  [ atoms ]
