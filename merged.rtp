@@ -1946,3 +1946,60 @@
   [ impropers ]
            NL    -CLP   CA    CB
            CLP   +NL    CA    OL
+
+[ NH2 ] ; terminal residue for NH2 cap
+
+ [ atoms ]
+           NT      NH1    -0.620   1
+           HN1     H       0.310   1
+           HN2     H       0.310   1
+
+ [ bonds ]
+          -C       NT
+           NT      HN1
+           NT      HN2
+
+ [ impropers ]
+           NT    HN1    -C    HN2
+
+
+
+[ NH2p ] ; terminal residue for NH2 cap
+
+ [ atoms ]
+           NL      NH1    -0.620   1
+           HN1     H       0.310   1
+           HN2     H       0.310   1
+
+ [ bonds ]
+          -CLP     NL
+           NL      HN1
+           NL      HN2
+
+ [ impropers ]
+           NL    HN1    -CLP    HN2
+
+[ NDMp ] ; peptoid sarcosine esque NME cap
+        ; renamed by Justin Lemkul to avoid clash with N-methylacetamide
+ [ atoms ]
+      NL   NH1  -0.210  1
+      CA   CT3  -0.165  2
+      HA1   HA3   0.090  3
+      HA2   HA3   0.090  4
+      HA3   HA3   0.090  5
+      CAT   CT3  -0.165  6
+      HT1   HA3   0.090  7
+      HT2   HA3   0.090  8
+      HT3   HA3   0.090  9
+ [ bonds ]
+     -CLP   NL
+      NL   CA
+      CA   HA1
+      CA   HA2
+      CA   HA3
+      NL   CAT
+      CAT   HT1
+      CAT   HT2
+      CAT   HT3
+ [ impropers ]
+      NL   -CLP   CAT   CA
