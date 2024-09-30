@@ -764,12 +764,12 @@ def run():
     if args.anglefile is not None:
         try:
             angles = np.loadtxt(args.anglefile)
-            if np.all(angles < 2 * np.pi) and np.all(angles > -np.pi):
-                angles *= (180 / np.pi)
-            _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
-            return
         except:
-            print("Angle file error -- Could not load text file as numpy: ", args.anglefile)
+            raise ValueError(f"Angle file error -- Could not load text file as numpy: {args.anglefile}")
+        if np.all(angles < 2 * np.pi) and np.all(angles > -np.pi):
+            angles *= (180 / np.pi)
+        _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
+        return
     if args.phi is not None and args.psi is not None and args.omega is not None:
         angles = np.array([args.phi, args.psi, args.omega])
         _run_tide_or_toid(args.tide)(args.seq, angles, fname, default_letter, args.nomin)
