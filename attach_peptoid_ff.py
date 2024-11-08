@@ -64,6 +64,10 @@ with open(os.path.join(cd, "ffbonded/improper.itp"), "r") as f1:
     with open(os.path.join(latest_dir, "ffbonded.itp"), "a+") as f2:
         f2.write(f1.read())
 with open(os.path.join(cd, "atomtypes.atp"), "r") as f1:
+    lines = f1.readlines()  # Read all lines into a list
     with open(os.path.join(latest_dir, "atomtypes.atp"), "a+") as f2:
-        f2.write(f1.read())
+        # Write each line except the last one with a newline
+        f2.writelines(lines[:-1]) 
+        # Write the last line without adding an extra newline at the end
+        f2.write(lines[-1].rstrip('\n'))
 
