@@ -74,5 +74,8 @@
       CT      NH1       TC     5   121.00    376.56   0.000000    0.000000 ; for n-tbu from CGenFF
       TC      NH1       CA     5   120.00    418.40   0.000000    0.000000 ; fentanyl, Lesnik et al. for n-phenyl
       CA      NH1      CT2     5   119.50    351.46   0.000000    0.000000 ; from CGenFF for n-phenyl
+; for peptoid NH2p
+   H         NH1       H       5   120.000000   192.464000   0.00000000         0.00 ; from HGP1 NG2S2 HGP1 (amide)
+
 ; Original CHARMM...
 
