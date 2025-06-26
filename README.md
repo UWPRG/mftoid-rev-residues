@@ -26,6 +26,7 @@ The code in this package and in our scripts requires a set of dependencies. You 
 conda env create -f environment.yml
 conda activate peptoid_env
 ```
+Additionally please use **GROMACS 2021.4** for the structure generation.
 
 ### Setting up the augmented CHARMM36 Force Field
 
