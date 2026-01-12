@@ -93,7 +93,7 @@ with open("plumed_meta.dat", "w") as f:
     max_rng = ",".join("pi" for n in range(len(cvs)))
  
     f.write("SIGMA=0.1," + sig_ab_rng + "," + sig_rng + "\n")
-    f.write("HEIGHT=3.0 #kJ/mol\n" + "PACE=500\n" + "BIASFACTOR=30\n" + "LABEL=pb\n")
+    f.write("HEIGHT=3.0 #kJ/mol\n" + "PACE=500\n" + "BIASFACTOR=20\n" + "LABEL=pb\n")
     f.write("GRID_MIN=0," + min_ab_rng + "," + min_rng + "\n")
     f.write("GRID_MAX=3," + max_ab_rng + "," + max_rng + "\n")
     
@@ -112,7 +112,7 @@ with open("plumed_reweight.dat", "w") as f:
     f.write("PBMETAD ...\n")
     f.write("ARG=" + scv_rng + "\n")
     f.write("SIGMA=" + sig_rng + "\n")
-    f.write("HEIGHT=0 #kJ/mol\n" + "PACE=500000\n" + "TEMP=300.0\n" + "BIASFACTOR=30\n")
+    f.write("HEIGHT=0 #kJ/mol\n" + "PACE=500000\n" + "TEMP=300.0\n" + "BIASFACTOR=20\n")
     f.write("GRID_MIN="+ min_rng + "\n")
     f.write("GRID_MAX="+ max_rng + "\n")
     f.write("LABEL=pb\n" + "... PBMETAD\n")
