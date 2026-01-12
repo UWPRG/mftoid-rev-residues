@@ -93,7 +93,7 @@ with open("plumed_meta.dat", "w") as f:
     max_rng = ",".join("pi" for n in range(len(cvs)))
  
     f.write("SIGMA=0.1," + sig_ab_rng + "," + sig_rng + "\n")
-    f.write("HEIGHT=3.0 #kJ/mol\n" + "PACE=500\n" + "BIASFACTOR=20\n" + "LABEL=pb\n")
+    f.write("HEIGHT=3.0 #kJ/mol\n" + "PACE=500\n" + "BIASFACTOR=30\n" + "LABEL=pb\n")
     f.write("GRID_MIN=0," + min_ab_rng + "," + min_rng + "\n")
     f.write("GRID_MAX=3," + max_ab_rng + "," + max_rng + "\n")
     
